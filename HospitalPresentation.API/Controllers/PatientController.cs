@@ -7,6 +7,7 @@ using HospitalDataLayer.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HospitalBusinessLayer.Core;
+using HospitalDataLayer.Infrastructure.DTOs.Patient;
 
 namespace HospitalPresentation.API.Controllers
 {
@@ -58,5 +59,30 @@ namespace HospitalPresentation.API.Controllers
             }
 
         }
+
+
+        [HttpPost("CreatePatient", Name = "CreatePatient")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> CreatePatientAsync([FromBody] CreatePatientDTO createPatientDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid data.");
+                }
+
+                int patientId = await HospitalBusinessLayer.Core.clsPatient.CreatePatientAsync(createPatientDto);
+
+                return CreatedAtRoute("GetPatientById", new { PatientId = patientId }, patientId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
     }
 }
