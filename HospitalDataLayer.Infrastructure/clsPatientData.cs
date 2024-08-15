@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HospitalDataLayer.Infrastructure.DTOs;
 using Npgsql;
 using Microsoft.Extensions.Logging;
+using HospitalDataLayer.Infrastructure.DTOs.Patient;
 
 namespace HospitalDataLayer.Infrastructure
 {
@@ -42,8 +43,10 @@ namespace HospitalDataLayer.Infrastructure
                                 BirthDate = reader.GetDateTime(6),
                                 EmergencyContactName = reader.GetString(7),
                                 EmergencyContactPhone = reader.GetString(8),
-                                MedicalHistory = reader.GetString(9),
-                                Allergies = reader.GetString(10)
+                                InsuranceProvider = reader.GetString(9),
+                                InsurancePolicyNumber = reader.GetString(10),
+                                MedicalHistory = reader.GetString(11),
+                                Allergies = reader.GetString(12)
                             };
                             PatientsList.Add(patient);
                         }
@@ -95,8 +98,10 @@ namespace HospitalDataLayer.Infrastructure
                                     BirthDate = reader.GetDateTime(6),
                                     EmergencyContactName = reader.GetString(7),
                                     EmergencyContactPhone = reader.GetString(8),
-                                    MedicalHistory = reader.GetString(9),
-                                    Allergies = reader.GetString(10)
+                                    InsuranceProvider = reader.GetString(9),
+                                    InsurancePolicyNumber = reader.GetString(10),
+                                    MedicalHistory = reader.GetString(11),
+                                    Allergies = reader.GetString(12)
                                 };
                             }
                         }
