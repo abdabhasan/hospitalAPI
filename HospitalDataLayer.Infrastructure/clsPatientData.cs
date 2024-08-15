@@ -43,10 +43,10 @@ namespace HospitalDataLayer.Infrastructure
                                 BirthDate = reader.GetDateTime(6),
                                 EmergencyContactName = reader.GetString(7),
                                 EmergencyContactPhone = reader.GetString(8),
-                                InsuranceProvider = reader.GetString(9),
-                                InsurancePolicyNumber = reader.GetString(10),
-                                MedicalHistory = reader.GetString(11),
-                                Allergies = reader.GetString(12)
+                                InsuranceProvider = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                InsurancePolicyNumber = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                MedicalHistory = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Allergies = reader.IsDBNull(12) ? null : reader.GetString(12)
                             };
                             PatientsList.Add(patient);
                         }
@@ -98,10 +98,10 @@ namespace HospitalDataLayer.Infrastructure
                                     BirthDate = reader.GetDateTime(6),
                                     EmergencyContactName = reader.GetString(7),
                                     EmergencyContactPhone = reader.GetString(8),
-                                    InsuranceProvider = reader.GetString(9),
-                                    InsurancePolicyNumber = reader.GetString(10),
-                                    MedicalHistory = reader.GetString(11),
-                                    Allergies = reader.GetString(12)
+                                    InsuranceProvider = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                    InsurancePolicyNumber = reader.IsDBNull(10) ? null : reader.GetString(10),
+                                    MedicalHistory = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                    Allergies = reader.IsDBNull(12) ? null : reader.GetString(12)
                                 };
                             }
                         }
