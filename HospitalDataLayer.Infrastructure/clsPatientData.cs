@@ -120,5 +120,66 @@ namespace HospitalDataLayer.Infrastructure
             return Patient;
         }
 
+
+
+        public static async Task<int> CreatePatientAsync(CreatePatientDTO Patient)
+        {
+            int NewPatientId = 0;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT create_patient(" +
+                                   "@FirstName::TEXT, " +
+                                   "@LastName::TEXT, " +
+                                   "@Gender::TEXT, " +
+                                   "@Address::TEXT, " +
+                                   "@Phone::TEXT, " +
+                                   "@Email::TEXT, " +
+                                   "@BirthDate::DATE, " +
+                                   "@EmergencyContactName::TEXT, " +
+                                   "@EmergencyContactPhone::TEXT, " +
+                                   "@InsuranceProvider::TEXT, " +
+                                   "@InsurancePolicyNumber::TEXT, " +
+                                   "@MedicalHistory::TEXT, " +
+                                   "@Allergies::TEXT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("FirstName", Patient.FirstName);
+                        cmd.Parameters.AddWithValue("LastName", Patient.LastName);
+                        cmd.Parameters.AddWithValue("Gender", Patient.Gender);
+                        cmd.Parameters.AddWithValue("Address", Patient.Address);
+                        cmd.Parameters.AddWithValue("Phone", Patient.Phone);
+                        cmd.Parameters.AddWithValue("Email", Patient.Email);
+                        cmd.Parameters.AddWithValue("BirthDate", Patient.BirthDate);
+                        cmd.Parameters.AddWithValue("EmergencyContactName", Patient.EmergencyContactName);
+                        cmd.Parameters.AddWithValue("EmergencyContactPhone", Patient.EmergencyContactPhone);
+                        cmd.Parameters.AddWithValue("InsuranceProvider", Patient.InsuranceProvider);
+                        cmd.Parameters.AddWithValue("InsurancePolicyNumber", Patient.InsurancePolicyNumber);
+                        cmd.Parameters.AddWithValue("MedicalHistory", Patient.MedicalHistory);
+                        cmd.Parameters.AddWithValue("Allergies", Patient.Allergies);
+
+                        NewPatientId = (int)await cmd.ExecuteScalarAsync();
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while creating the patient: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while creating the patient: {ex.Message}");
+            }
+
+            return NewPatientId;
+        }
+
+
+
     }
 }
