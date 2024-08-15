@@ -13,5 +13,12 @@ namespace HospitalBusinessLayer.Core
         {
             return await clsPatientData.GetAllPatientsAsync();
         }
+
+        public static async Task<PatientDTO> GetPatientByIdAsync(int PatientId)
+        {
+            return await clsPatientData.GetPatientByIdAsync(PatientId);
+        }
+
+
     }
 }
