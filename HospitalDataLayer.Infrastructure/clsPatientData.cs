@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HospitalDataLayer.Infrastructure.DTOs;
 using Npgsql;
-using Microsoft.Extensions.Logging;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
 
 namespace HospitalDataLayer.Infrastructure
@@ -272,7 +267,6 @@ namespace HospitalDataLayer.Infrastructure
 
             return isUpdated;
         }
-
 
 
         public static async Task<string> GetPatientMedicalHistoryAsync(int patientId)

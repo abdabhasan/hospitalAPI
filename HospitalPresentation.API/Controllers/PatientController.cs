@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using HospitalDataLayer.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
 
 namespace HospitalPresentation.API.Controllers
