@@ -38,6 +38,8 @@ namespace HospitalPresentation.API.Controllers
             }
 
         }
+
+
         [HttpGet("GetPatientById", Name = "GetPatientById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -77,6 +79,37 @@ namespace HospitalPresentation.API.Controllers
                 int patientId = await HospitalBusinessLayer.Core.clsPatient.CreatePatientAsync(createPatientDto);
 
                 return CreatedAtRoute("GetPatientById", new { PatientId = patientId }, patientId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+        [HttpDelete("DeletePatient/{patientId}", Name = "DeletePatient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> DeletePatientAsync(int patientId)
+        {
+            try
+            {
+                if (patientId <= 0)
+                {
+                    return BadRequest("Invalid patient ID.");
+                }
+
+                bool isDeleted = await HospitalBusinessLayer.Core.clsPatient.DeletePatientAsync(patientId);
+
+                if (isDeleted)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("Patient not found or could not be deleted.");
+                }
             }
             catch (Exception ex)
             {
