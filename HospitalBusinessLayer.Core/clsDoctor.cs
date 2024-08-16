@@ -17,4 +17,9 @@ public class clsDoctor
     {
         return await clsDoctorData.CreateDoctorAsync(doctor);
     }
+    public static async Task<string> GetDoctorOfficeNumberAsync(int doctorId)
+    {
+        return await clsDoctorData.GetDoctorOfficeNumberAsync(doctorId);
+    }
+
 }

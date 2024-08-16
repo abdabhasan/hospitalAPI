@@ -83,5 +83,44 @@ namespace HospitalPresentation.API.Controllers
             }
         }
 
+
+
+        [HttpGet("GetDoctorOfficeNumber/{doctorId}", Name = "GetDoctorOfficeNumber")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<string>> GetDoctorOfficeNumberAsync(int doctorId)
+        {
+            try
+            {
+                if (doctorId <= 0)
+                {
+                    return BadRequest("Invalid doctor ID.");
+                }
+
+                string officeNumber = await HospitalBusinessLayer.Core.clsDoctor.GetDoctorOfficeNumberAsync(doctorId);
+
+                if (officeNumber == "Error: Doctor not found.")
+                {
+                    return NotFound(officeNumber);
+                }
+                else if (officeNumber == "Error: Doctor has no office number.")
+                {
+                    return NotFound(officeNumber);
+                }
+                else if (officeNumber.StartsWith("Error:"))
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, officeNumber);
+                }
+
+                return Ok(officeNumber);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
     }
 }

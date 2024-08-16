@@ -162,5 +162,57 @@ namespace HospitalDataLayer.Infrastructure
             return newDoctorId;
         }
 
+
+        public static async Task<string> GetDoctorOfficeNumberAsync(int doctorId)
+        {
+            string officeNumber = string.Empty;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT get_doctor_office_number(@DoctorId::INT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("DoctorId", doctorId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            officeNumber = result.ToString();
+
+                            if (officeNumber.StartsWith("Error:"))
+                            {
+                                return officeNumber;
+                            }
+                        }
+                        else
+                        {
+                            officeNumber = "Error: An unexpected error occurred.";
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while retrieving the doctor's office number: {npgsqlEx.Message}");
+                officeNumber = "An error occurred while retrieving the office number.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving the doctor's office number: {ex.Message}");
+                officeNumber = "An error occurred while retrieving the office number.";
+            }
+
+            return officeNumber;
+        }
+
+
+
+
     }
 }
