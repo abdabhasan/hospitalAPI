@@ -30,5 +30,28 @@ namespace HospitalPresentation.API.Controllers
 
         }
 
+
+        [HttpGet("GetDoctorById", Name = "GetDoctorById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<DoctorDTO>> GetDoctorByIdAsync(int doctorId)
+        {
+
+            try
+            {
+                DoctorDTO doctor = await HospitalBusinessLayer.Core.clsDoctor.GetDoctorByIdAsync(doctorId);
+                if (doctor == null)
+                {
+                    return NotFound($"Doctor with Id {doctorId} NOT FOUND!");
+                }
+                return Ok(doctor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+
+        }
+
     }
 }

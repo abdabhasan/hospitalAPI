@@ -57,5 +57,58 @@ namespace HospitalDataLayer.Infrastructure
 
         }
 
+
+        public static async Task<DoctorDTO> GetDoctorByIdAsync(int doctorId)
+        {
+            DoctorDTO doctor = null;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT * FROM get_doctor_by_id(@Id)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("Id", doctorId);
+
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                doctor = new DoctorDTO
+                                {
+                                    Id = reader.GetInt32(0),
+                                    FullName = reader.GetString(1),
+                                    Gender = reader.GetString(2),
+                                    Address = reader.GetString(3),
+                                    Phone = reader.GetString(4),
+                                    Email = reader.GetString(5),
+                                    BirthDate = reader.GetDateTime(6),
+                                    Specialization = reader.GetString(7),
+                                    OfficeNumber = reader.IsDBNull(8) ? null : reader.GetString(8),
+                                    YearsOfExperience = reader.GetInt32(9),
+                                    Qualifications = reader.GetString(10),
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while fetching the Doctor by ID: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while fetching the Doctor by ID: {ex.Message}");
+            }
+
+            return doctor;
+        }
+
+
     }
 }
