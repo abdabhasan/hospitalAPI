@@ -38,6 +38,11 @@ namespace HospitalBusinessLayer.Core
             return await clsPatientData.GetPatientMedicalHistoryAsync(patientId);
         }
 
+        public static async Task<string> GetPatientAllergiesAsync(int patientId)
+        {
+            return await clsPatientData.GetPatientAllergiesAsync(patientId);
+        }
+
 
     }
 }

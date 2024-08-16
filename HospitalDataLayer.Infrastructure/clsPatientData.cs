@@ -324,5 +324,54 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
+        public static async Task<string> GetPatientAllergiesAsync(int patientId)
+        {
+            string allergies = string.Empty;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT get_patient_allergies(@PatientId::INT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("PatientId", patientId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            allergies = result.ToString();
+
+                            if (allergies.StartsWith("Error:"))
+                            {
+                                return allergies;
+                            }
+                        }
+                        else
+                        {
+                            allergies = "Error: An unexpected error occurred.";
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while retrieving the patient's allergies: {npgsqlEx.Message}");
+                allergies = "An error occurred while retrieving the allergies.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving the patient's allergies: {ex.Message}");
+                allergies = "An error occurred while retrieving the allergies.";
+            }
+
+            return allergies;
+        }
+
+
     }
 }
