@@ -53,5 +53,35 @@ namespace HospitalPresentation.API.Controllers
 
         }
 
+
+
+        [HttpPost("CreateDoctor", Name = "CreateDoctor")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> CreateDoctorAsync([FromBody] CreateDoctorDTO createDoctorDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid data.");
+                }
+
+                int doctorId = await HospitalBusinessLayer.Core.clsDoctor.CreateDoctorAsync(createDoctorDto);
+
+                if (doctorId == 0 || doctorId == null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest);
+                }
+
+                return CreatedAtRoute("GetDoctorById", new { DoctorId = doctorId }, doctorId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
     }
 }

@@ -9,8 +9,12 @@ public class clsDoctor
     {
         return await clsDoctorData.GetAllDoctorsAsync();
     }
-    public static async Task<DoctorDTO> GetDoctorByIdAsync(int patientId)
+    public static async Task<DoctorDTO> GetDoctorByIdAsync(int doctorId)
     {
-        return await clsDoctorData.GetDoctorByIdAsync(patientId);
+        return await clsDoctorData.GetDoctorByIdAsync(doctorId);
+    }
+    public static async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
+    {
+        return await clsDoctorData.CreateDoctorAsync(doctor);
     }
 }

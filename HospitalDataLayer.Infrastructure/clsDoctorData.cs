@@ -109,6 +109,58 @@ namespace HospitalDataLayer.Infrastructure
             return doctor;
         }
 
+        public static async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
+        {
+            int newDoctorId = 0;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT create_doctor(" +
+                                   "@FirstName::TEXT, " +
+                                   "@LastName::TEXT, " +
+                                   "@Gender::TEXT, " +
+                                   "@Address::TEXT, " +
+                                   "@Phone::TEXT, " +
+                                   "@Email::TEXT, " +
+                                   "@BirthDate::DATE, " +
+                                   "@Specialization::VARCHAR, " +
+                                   "@OfficeNumber::VARCHAR, " +
+                                   "@YearsOfExperience::INT, " +
+                                   "@Qualifications::TEXT )";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("FirstName", doctor.FirstName);
+                        cmd.Parameters.AddWithValue("LastName", doctor.LastName);
+                        cmd.Parameters.AddWithValue("Gender", doctor.Gender);
+                        cmd.Parameters.AddWithValue("Address", doctor.Address);
+                        cmd.Parameters.AddWithValue("Phone", doctor.Phone);
+                        cmd.Parameters.AddWithValue("Email", doctor.Email);
+                        cmd.Parameters.AddWithValue("BirthDate", doctor.BirthDate);
+                        cmd.Parameters.AddWithValue("Specialization", doctor.Specialization);
+                        cmd.Parameters.AddWithValue("OfficeNumber", doctor.OfficeNumber);
+                        cmd.Parameters.AddWithValue("YearsOfExperience", doctor.YearsOfExperience);
+                        cmd.Parameters.AddWithValue("Qualifications", doctor.Qualifications);
+
+                        newDoctorId = (int)await cmd.ExecuteScalarAsync();
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while creating the Doctor: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while creating the Doctor: {ex.Message}");
+            }
+
+            return newDoctorId;
+        }
 
     }
 }
