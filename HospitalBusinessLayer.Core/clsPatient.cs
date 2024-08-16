@@ -28,6 +28,11 @@ namespace HospitalBusinessLayer.Core
             return await clsPatientData.DeletePatientAsync(patientId);
         }
 
+        public static async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDTO updatePatientDto)
+        {
+            return await clsPatientData.UpdatePatientAsync(patientId, updatePatientDto);
+
+        }
 
     }
 }

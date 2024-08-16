@@ -117,5 +117,37 @@ namespace HospitalPresentation.API.Controllers
             }
         }
 
+
+        [HttpPut("UpdatePatient/{patientId}", Name = "UpdatePatient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> UpdatePatientAsync(int patientId, [FromBody] UpdatePatientDTO updatePatientDto)
+        {
+            try
+            {
+                if (patientId <= 0 || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid patient ID or data.");
+                }
+
+                bool isUpdated = await HospitalBusinessLayer.Core.clsPatient.UpdatePatientAsync(patientId, updatePatientDto);
+
+                if (isUpdated)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("Patient not found or could not be updated.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
     }
 }
