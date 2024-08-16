@@ -274,5 +274,104 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
+
+        public static async Task<string> GetPatientMedicalHistoryAsync(int patientId)
+        {
+            string medicalHistory = string.Empty;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT get_patient_medical_history(@PatientId::INT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("PatientId", patientId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            medicalHistory = result.ToString();
+
+                            if (medicalHistory.StartsWith("Error:"))
+                            {
+                                return medicalHistory;
+                            }
+                        }
+                        else
+                        {
+                            medicalHistory = "Error: An unexpected error occurred.";
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while retrieving the patient's medical history: {npgsqlEx.Message}");
+                medicalHistory = "An error occurred while retrieving the medical history.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving the patient's medical history: {ex.Message}");
+                medicalHistory = "An error occurred while retrieving the medical history.";
+            }
+
+            return medicalHistory;
+        }
+
+
+        public static async Task<string> GetPatientAllergiesAsync(int patientId)
+        {
+            string allergies = string.Empty;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT get_patient_allergies(@PatientId::INT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("PatientId", patientId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            allergies = result.ToString();
+
+                            if (allergies.StartsWith("Error:"))
+                            {
+                                return allergies;
+                            }
+                        }
+                        else
+                        {
+                            allergies = "Error: An unexpected error occurred.";
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while retrieving the patient's allergies: {npgsqlEx.Message}");
+                allergies = "An error occurred while retrieving the allergies.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving the patient's allergies: {ex.Message}");
+                allergies = "An error occurred while retrieving the allergies.";
+            }
+
+            return allergies;
+        }
+
+
     }
 }

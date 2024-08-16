@@ -31,8 +31,18 @@ namespace HospitalBusinessLayer.Core
         public static async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDTO updatePatientDto)
         {
             return await clsPatientData.UpdatePatientAsync(patientId, updatePatientDto);
-
         }
+
+        public static async Task<string> GetPatientMedicalHistoryAsync(int patientId)
+        {
+            return await clsPatientData.GetPatientMedicalHistoryAsync(patientId);
+        }
+
+        public static async Task<string> GetPatientAllergiesAsync(int patientId)
+        {
+            return await clsPatientData.GetPatientAllergiesAsync(patientId);
+        }
+
 
     }
 }
