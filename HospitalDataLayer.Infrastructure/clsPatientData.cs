@@ -213,5 +213,66 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
+        public static async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDTO updatePatientDto)
+        {
+            bool isUpdated = false;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT update_patient(" +
+                                   "@PatientId::INT, " +
+                                   "@FirstName::TEXT, " +
+                                   "@LastName::TEXT, " +
+                                   "@Gender::TEXT, " +
+                                   "@Address::TEXT, " +
+                                   "@Phone::TEXT, " +
+                                   "@Email::TEXT, " +
+                                   "@BirthDate::DATE, " +
+                                   "@EmergencyContactName::TEXT, " +
+                                   "@EmergencyContactPhone::TEXT, " +
+                                   "@InsuranceProvider::TEXT, " +
+                                   "@InsurancePolicyNumber::TEXT, " +
+                                   "@MedicalHistory::TEXT, " +
+                                   "@Allergies::TEXT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("PatientId", patientId);
+                        cmd.Parameters.AddWithValue("FirstName", updatePatientDto.FirstName);
+                        cmd.Parameters.AddWithValue("LastName", updatePatientDto.LastName);
+                        cmd.Parameters.AddWithValue("Gender", updatePatientDto.Gender);
+                        cmd.Parameters.AddWithValue("Address", updatePatientDto.Address);
+                        cmd.Parameters.AddWithValue("Phone", updatePatientDto.Phone);
+                        cmd.Parameters.AddWithValue("Email", updatePatientDto.Email);
+                        cmd.Parameters.AddWithValue("BirthDate", updatePatientDto.BirthDate);
+                        cmd.Parameters.AddWithValue("EmergencyContactName", updatePatientDto.EmergencyContactName);
+                        cmd.Parameters.AddWithValue("EmergencyContactPhone", updatePatientDto.EmergencyContactPhone);
+                        cmd.Parameters.AddWithValue("InsuranceProvider", updatePatientDto.InsuranceProvider);
+                        cmd.Parameters.AddWithValue("InsurancePolicyNumber", updatePatientDto.InsurancePolicyNumber);
+                        cmd.Parameters.AddWithValue("MedicalHistory", updatePatientDto.MedicalHistory);
+                        cmd.Parameters.AddWithValue("Allergies", updatePatientDto.Allergies);
+
+                        var result = await cmd.ExecuteScalarAsync();
+                        isUpdated = (result != null && (bool)result);
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while updating the patient: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while updating the patient: {ex.Message}");
+            }
+
+            return isUpdated;
+        }
+
+
     }
 }
