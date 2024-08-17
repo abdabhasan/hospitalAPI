@@ -122,5 +122,38 @@ namespace HospitalPresentation.API.Controllers
             }
         }
 
+
+
+        [HttpDelete("DeleteDoctor/{doctorId}", Name = "DeleteDoctor")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> DeleteDoctorAsync(int doctorId)
+        {
+            try
+            {
+                if (doctorId <= 0)
+                {
+                    return BadRequest("Invalid Doctor ID.");
+                }
+
+                bool isDeleted = await HospitalBusinessLayer.Core.clsDoctor.DeleteDoctorAsync(doctorId);
+
+                if (isDeleted)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("Doctor not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
     }
 }

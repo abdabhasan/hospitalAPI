@@ -109,6 +109,7 @@ namespace HospitalDataLayer.Infrastructure
             return doctor;
         }
 
+
         public static async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
         {
             int newDoctorId = 0;
@@ -212,7 +213,38 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
+        public static async Task<bool> DeleteDoctorAsync(int doctorId)
+        {
+            bool isDeleted = false;
 
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT delete_doctor(@DoctorId::INT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("DoctorId", doctorId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+                        isDeleted = (result != null && (bool)result);
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while deleting the Doctor: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting the Doctor: {ex.Message}");
+            }
+
+            return isDeleted;
+        }
 
     }
 }

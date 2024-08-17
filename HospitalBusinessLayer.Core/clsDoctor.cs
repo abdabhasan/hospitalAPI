@@ -21,5 +21,9 @@ public class clsDoctor
     {
         return await clsDoctorData.GetDoctorOfficeNumberAsync(doctorId);
     }
+    public static async Task<bool> DeleteDoctorAsync(int doctorId)
+    {
+        return await clsDoctorData.DeleteDoctorAsync(doctorId);
+    }
 
 }
