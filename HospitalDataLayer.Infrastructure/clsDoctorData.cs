@@ -109,6 +109,7 @@ namespace HospitalDataLayer.Infrastructure
             return doctor;
         }
 
+
         public static async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
         {
             int newDoctorId = 0;
@@ -212,7 +213,95 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
+        public static async Task<bool> UpdateDoctorAsync(int doctorId, UpdateDoctorDTO updateDoctorDto)
+        {
+            bool isUpdated = false;
 
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT update_doctor(" +
+                                   "@DoctorId::INT, " +
+                                   "@FirstName::TEXT, " +
+                                   "@LastName::TEXT, " +
+                                   "@Gender::TEXT, " +
+                                   "@Address::TEXT, " +
+                                   "@Phone::TEXT, " +
+                                   "@Email::TEXT, " +
+                                   "@BirthDate::DATE, " +
+                                   "@Specialization::VARCHAR, " +
+                                   "@OfficeNumber::VARCHAR, " +
+                                   "@YearsOfExperience::INT, " +
+                                   "@Qualifications::TEXT )";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("DoctorId", doctorId);
+                        cmd.Parameters.AddWithValue("FirstName", updateDoctorDto.FirstName);
+                        cmd.Parameters.AddWithValue("LastName", updateDoctorDto.LastName);
+                        cmd.Parameters.AddWithValue("Gender", updateDoctorDto.Gender);
+                        cmd.Parameters.AddWithValue("Address", updateDoctorDto.Address);
+                        cmd.Parameters.AddWithValue("Phone", updateDoctorDto.Phone);
+                        cmd.Parameters.AddWithValue("Email", updateDoctorDto.Email);
+                        cmd.Parameters.AddWithValue("BirthDate", updateDoctorDto.BirthDate);
+                        cmd.Parameters.AddWithValue("Specialization", updateDoctorDto.Specialization);
+                        cmd.Parameters.AddWithValue("OfficeNumber", updateDoctorDto.OfficeNumber);
+                        cmd.Parameters.AddWithValue("YearsOfExperience", updateDoctorDto.YearsOfExperience);
+                        cmd.Parameters.AddWithValue("Qualifications", updateDoctorDto.Qualifications);
+
+                        var result = await cmd.ExecuteScalarAsync();
+                        isUpdated = (result != null && (bool)result);
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while updating the Doctor: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while updating the Doctor: {ex.Message}");
+            }
+
+            return isUpdated;
+        }
+
+
+        public static async Task<bool> DeleteDoctorAsync(int doctorId)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT delete_doctor(@DoctorId::INT)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("DoctorId", doctorId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+                        isDeleted = (result != null && (bool)result);
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while deleting the Doctor: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting the Doctor: {ex.Message}");
+            }
+
+            return isDeleted;
+        }
 
     }
 }
