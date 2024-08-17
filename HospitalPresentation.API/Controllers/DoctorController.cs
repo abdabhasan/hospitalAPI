@@ -30,5 +30,97 @@ namespace HospitalPresentation.API.Controllers
 
         }
 
+
+        [HttpGet("GetDoctorById", Name = "GetDoctorById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<DoctorDTO>> GetDoctorByIdAsync(int doctorId)
+        {
+
+            try
+            {
+                DoctorDTO doctor = await HospitalBusinessLayer.Core.clsDoctor.GetDoctorByIdAsync(doctorId);
+                if (doctor == null)
+                {
+                    return NotFound($"Doctor with Id {doctorId} NOT FOUND!");
+                }
+                return Ok(doctor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+
+        }
+
+
+
+        [HttpPost("CreateDoctor", Name = "CreateDoctor")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> CreateDoctorAsync([FromBody] CreateDoctorDTO createDoctorDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid data.");
+                }
+
+                int doctorId = await HospitalBusinessLayer.Core.clsDoctor.CreateDoctorAsync(createDoctorDto);
+
+                if (doctorId == 0 || doctorId == null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest);
+                }
+
+                return CreatedAtRoute("GetDoctorById", new { DoctorId = doctorId }, doctorId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+
+        [HttpGet("GetDoctorOfficeNumber/{doctorId}", Name = "GetDoctorOfficeNumber")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<string>> GetDoctorOfficeNumberAsync(int doctorId)
+        {
+            try
+            {
+                if (doctorId <= 0)
+                {
+                    return BadRequest("Invalid doctor ID.");
+                }
+
+                string officeNumber = await HospitalBusinessLayer.Core.clsDoctor.GetDoctorOfficeNumberAsync(doctorId);
+
+                if (officeNumber == "Error: Doctor not found.")
+                {
+                    return NotFound(officeNumber);
+                }
+                else if (officeNumber == "Error: Doctor has no office number.")
+                {
+                    return NotFound(officeNumber);
+                }
+                else if (officeNumber.StartsWith("Error:"))
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, officeNumber);
+                }
+
+                return Ok(officeNumber);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
     }
 }
