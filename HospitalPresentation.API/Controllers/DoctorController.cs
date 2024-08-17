@@ -124,6 +124,41 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+
+        [HttpPut("UpdateDoctor/{doctorId}", Name = "UpdateDoctor")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> UpdateDoctorAsync(int doctorId, [FromBody] UpdateDoctorDTO UpdateDoctorDto)
+        {
+            try
+            {
+                if (doctorId <= 0 || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid Doctor ID.");
+                }
+
+                bool isUpdated = await HospitalBusinessLayer.Core.clsDoctor.UpdateDoctorAsync(doctorId, UpdateDoctorDto);
+
+                if (isUpdated)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("Doctor not found or could not be updated.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+
+
         [HttpDelete("DeleteDoctor/{doctorId}", Name = "DeleteDoctor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
