@@ -108,56 +108,6 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<string> GetStaffShiftByIdAsync(int staffId)
-        {
-            string shift = string.Empty;
-
-            try
-            {
-                using (var conn = new NpgsqlConnection(_connectionString))
-                {
-                    await conn.OpenAsync();
-
-                    string query = "SELECT get_staff_shift_by_id(@StaffId::INT)";
-
-                    using (var cmd = new NpgsqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("StaffId", staffId);
-
-                        var result = await cmd.ExecuteScalarAsync();
-
-                        if (result != null && result != DBNull.Value)
-                        {
-                            shift = result.ToString();
-
-                            if (shift.StartsWith("Error:"))
-                            {
-                                return shift;
-                            }
-                        }
-                        else
-                        {
-                            shift = "Error: An unexpected error occurred.";
-                        }
-                    }
-                }
-            }
-            catch (NpgsqlException npgsqlEx)
-            {
-                Console.WriteLine($"Database error occurred while retrieving the staff's shift: {npgsqlEx.Message}");
-                shift = "An error occurred while retrieving the shift.";
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while retrieving the staff's shift: {ex.Message}");
-                shift = "An error occurred while retrieving the shift.";
-            }
-
-            return shift;
-        }
-
-
-
         public static async Task<int> CreateStaffAsync(CreateStaffDTO staff)
         {
             int newStaffId = 0;

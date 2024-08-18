@@ -13,10 +13,6 @@ namespace HospitalBusinessLayer.Core
         {
             return await clsStaffData.GetStaffByIdAsync(staffId);
         }
-        public static async Task<string> GetStaffShiftByIdAsync(int staffId)
-        {
-            return await clsStaffData.GetStaffShiftByIdAsync(staffId);
-        }
         public static async Task<int> CreateStaffAsync(CreateStaffDTO staff)
         {
             return await clsStaffData.CreateStaffAsync(staff);

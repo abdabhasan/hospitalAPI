@@ -54,45 +54,6 @@ namespace HospitalPresentation.API.Controllers
 
 
 
-        [HttpGet("GetStaffShiftById/{staffId}", Name = "GetStaffShiftById")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<string>> GetStaffShiftByIdAsync(int staffId)
-        {
-            try
-            {
-                if (staffId <= 0)
-                {
-                    return BadRequest("Invalid staff ID.");
-                }
-
-                string shift = await HospitalBusinessLayer.Core.clsStaff.GetStaffShiftByIdAsync(staffId);
-
-                if (shift == "Error: Staff not found.")
-                {
-                    return NotFound(shift);
-                }
-                else if (shift == "Error: Staff has no shift.")
-                {
-                    return NotFound(shift);
-                }
-                else if (shift.StartsWith("Error:"))
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, shift);
-                }
-
-                return Ok(shift);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
-            }
-        }
-
-
-
         [HttpPost("CreateStaff", Name = "CreateStaff")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
