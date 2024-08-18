@@ -35,7 +35,6 @@ namespace HospitalDataLayer.Infrastructure
                                 Email = reader.GetString(5),
                                 BirthDate = reader.GetDateTime(6),
                                 Role = reader.GetString(7),
-                                Shift = reader.IsDBNull(8) ? null : reader.GetString(8),
                                 Qualifications = reader.GetString(9),
                             };
                             StaffList.Add(staff);
@@ -87,7 +86,6 @@ namespace HospitalDataLayer.Infrastructure
                                     Email = reader.GetString(5),
                                     BirthDate = reader.GetDateTime(6),
                                     Role = reader.GetString(7),
-                                    Shift = reader.IsDBNull(8) ? null : reader.GetString(8),
                                     Qualifications = reader.GetString(9),
                                 };
                             }
@@ -127,7 +125,6 @@ namespace HospitalDataLayer.Infrastructure
                                    "@Email::TEXT, " +
                                    "@BirthDate::DATE, " +
                                    "@Role::VARCHAR, " +
-                                   "@Shift::VARCHAR, " +
                                    "@Qualifications::TEXT )";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
@@ -140,7 +137,6 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("Email", staff.Email);
                         cmd.Parameters.AddWithValue("BirthDate", staff.BirthDate);
                         cmd.Parameters.AddWithValue("Role", staff.Role);
-                        cmd.Parameters.AddWithValue("Shift", staff.Shift);
                         cmd.Parameters.AddWithValue("Qualifications", staff.Qualifications);
 
                         newStaffId = (int)await cmd.ExecuteScalarAsync();
@@ -180,7 +176,6 @@ namespace HospitalDataLayer.Infrastructure
                                    "@Email::TEXT, " +
                                    "@BirthDate::DATE, " +
                                    "@Role::VARCHAR, " +
-                                   "@Shift::VARCHAR, " +
                                    "@Qualifications::TEXT )";
 
                     using (var cmd = new NpgsqlCommand(query, conn))
@@ -194,7 +189,6 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("Email", updateStaffDto.Email);
                         cmd.Parameters.AddWithValue("BirthDate", updateStaffDto.BirthDate);
                         cmd.Parameters.AddWithValue("Role", updateStaffDto.Role);
-                        cmd.Parameters.AddWithValue("Shift", updateStaffDto.Shift);
                         cmd.Parameters.AddWithValue("Qualifications", updateStaffDto.Qualifications);
 
                         var result = await cmd.ExecuteScalarAsync();

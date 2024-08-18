@@ -15,7 +15,6 @@ namespace HospitalDataLayer.Infrastructure.DTOs.Staff
         public string Email { get; set; } = "";
         public DateTime BirthDate { get; set; }
         public string Role { get; set; } = "";
-        public string Shift { get; set; } = "";
         public string Qualifications { get; set; } = "";
     }
 }
