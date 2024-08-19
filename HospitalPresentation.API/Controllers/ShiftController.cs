@@ -62,5 +62,35 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+
+        [HttpPost("CreateShift", Name = "CreateShift")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> CreateShiftAsync([FromBody] CreateShiftDTO createShiftDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid data.");
+                }
+
+                bool shiftId = await HospitalBusinessLayer.Core.clsShift.CreateShiftAsync(createShiftDto);
+
+                if (shiftId == false || shiftId == null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest);
+                }
+
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
     }
 }
