@@ -125,5 +125,36 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+
+        [HttpDelete("DeleteShift/{doctorId}", Name = "DeleteShift")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> DeleteShiftByIdAsync(int doctorId)
+        {
+            try
+            {
+                if (doctorId <= 0)
+                {
+                    return BadRequest("Invalid Shift ID.");
+                }
+
+                bool isDeleted = await HospitalBusinessLayer.Core.clsShift.DeleteShiftByIdAsync(doctorId);
+
+                if (isDeleted)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("Shift not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
     }
 }

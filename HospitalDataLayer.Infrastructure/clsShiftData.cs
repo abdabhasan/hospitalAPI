@@ -231,6 +231,46 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
+        public static async Task<bool> DeleteShiftByIdAsync(int shiftId)
+        {
+            bool isSuccess = false;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT delete_shift_by_id(@ShiftId::int)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ShiftId", shiftId);
+
+                        var result = await cmd.ExecuteScalarAsync();
+
+                        if (result != null && Convert.ToBoolean(result))
+                        {
+                            isSuccess = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to delete shift.");
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while deleting shift: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting shift: {ex.Message}");
+            }
+
+            return isSuccess;
+        }
 
 
     }

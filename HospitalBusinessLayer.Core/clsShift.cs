@@ -22,5 +22,11 @@ namespace HospitalBusinessLayer.Core
         {
             return await clsShiftData.UpdateShiftByIdAsync(shiftId, shift);
         }
+        public static async Task<bool> DeleteShiftByIdAsync(int shiftId)
+        {
+            return await clsShiftData.DeleteShiftByIdAsync(shiftId);
+        }
+
+
     }
 }
