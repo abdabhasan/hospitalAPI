@@ -92,5 +92,38 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+
+
+        [HttpPut("UpdateShift", Name = "UpdateShift")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> UpdateShiftByIdAsync(int shiftId, [FromBody] UpdateShiftDTO updateShiftDto)
+        {
+            try
+            {
+                if (shiftId <= 0 || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid Shift ID.");
+                }
+
+
+                bool updateResult = await HospitalBusinessLayer.Core.clsShift.UpdateShiftByIdAsync(shiftId, updateShiftDto);
+
+                if (!updateResult)
+                {
+                    return BadRequest("Failed to update shift.");
+                }
+
+                return Ok("Shift updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
     }
 }

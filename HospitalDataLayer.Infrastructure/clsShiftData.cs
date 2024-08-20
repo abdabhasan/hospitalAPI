@@ -175,5 +175,63 @@ namespace HospitalDataLayer.Infrastructure
             return isSuccess;
         }
 
+
+        public static async Task<bool> UpdateShiftByIdAsync(int shiftId, UpdateShiftDTO shift)
+        {
+            bool isSuccess = false;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT update_shift_by_id(" +
+                                    "@ShiftId::int, " +
+                                    "@StaffId::int, " +
+                                    "@Date::date, " +
+                                    "@StartTime::time, " +
+                                    "@EndTime::time, " +
+                                    "@Role::varchar, " +
+                                    "@Notes::text)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ShiftId", shiftId);
+                        cmd.Parameters.AddWithValue("@StaffId", shift.StaffId);
+                        cmd.Parameters.AddWithValue("@Date", shift.Date.Date);
+                        cmd.Parameters.AddWithValue("@StartTime", shift.StartTime);
+                        cmd.Parameters.AddWithValue("@EndTime", shift.EndTime);
+                        cmd.Parameters.AddWithValue("@Role", shift.Role);
+                        cmd.Parameters.AddWithValue("@Notes", (object)shift.Notes ?? DBNull.Value);
+
+                        var result = await cmd.ExecuteScalarAsync();
+
+                        if (result != null && Convert.ToInt32(result) > 0)
+                        {
+                            isSuccess = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to update shift.");
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while updating shift: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while updating shift: {ex.Message}");
+            }
+
+            return isSuccess;
+        }
+
+
+
+
     }
 }

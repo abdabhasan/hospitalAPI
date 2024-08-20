@@ -18,5 +18,9 @@ namespace HospitalBusinessLayer.Core
         {
             return await clsShiftData.CreateShiftAsync(shift);
         }
+        public static async Task<bool> UpdateShiftByIdAsync(int shiftId, UpdateShiftDTO shift)
+        {
+            return await clsShiftData.UpdateShiftByIdAsync(shiftId, shift);
+        }
     }
 }
