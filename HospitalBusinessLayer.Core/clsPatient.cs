@@ -1,42 +1,51 @@
-using HospitalDataLayer.Infrastructure;
 using HospitalDataLayer.Infrastructure.DTOs;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
+using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
     public class clsPatient
     {
-        public static async Task<List<PatientDTO>> GetAllPatientsAsync()
+
+        private readonly IPatientData _patientData;
+
+        public clsPatient(IPatientData patientData)
         {
-            return await clsPatientData.GetAllPatientsAsync();
+            _patientData = patientData;
         }
 
-        public static async Task<PatientDTO> GetPatientByIdAsync(int PatientId)
+
+        public async Task<List<PatientDTO>> GetAllPatientsAsync()
         {
-            return await clsPatientData.GetPatientByIdAsync(PatientId);
-        }
-        public static async Task<int> CreatePatientAsync(CreatePatientDTO Patient)
-        {
-            return await clsPatientData.CreatePatientAsync(Patient);
-        }
-        public static async Task<bool> DeletePatientAsync(int patientId)
-        {
-            return await clsPatientData.DeletePatientAsync(patientId);
+            return await _patientData.GetAllPatientsAsync();
         }
 
-        public static async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDTO updatePatientDto)
+        public async Task<PatientDTO> GetPatientByIdAsync(int PatientId)
         {
-            return await clsPatientData.UpdatePatientAsync(patientId, updatePatientDto);
+            return await _patientData.GetPatientByIdAsync(PatientId);
+        }
+        public async Task<int> CreatePatientAsync(CreatePatientDTO Patient)
+        {
+            return await _patientData.CreatePatientAsync(Patient);
+        }
+        public async Task<bool> DeletePatientAsync(int patientId)
+        {
+            return await _patientData.DeletePatientAsync(patientId);
         }
 
-        public static async Task<string> GetPatientMedicalHistoryAsync(int patientId)
+        public async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDTO updatePatientDto)
         {
-            return await clsPatientData.GetPatientMedicalHistoryAsync(patientId);
+            return await _patientData.UpdatePatientAsync(patientId, updatePatientDto);
         }
 
-        public static async Task<string> GetPatientAllergiesAsync(int patientId)
+        public async Task<string> GetPatientMedicalHistoryAsync(int patientId)
         {
-            return await clsPatientData.GetPatientAllergiesAsync(patientId);
+            return await _patientData.GetPatientMedicalHistoryAsync(patientId);
+        }
+
+        public async Task<string> GetPatientAllergiesAsync(int patientId)
+        {
+            return await _patientData.GetPatientAllergiesAsync(patientId);
         }
 
 

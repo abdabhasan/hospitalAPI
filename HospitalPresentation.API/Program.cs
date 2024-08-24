@@ -21,6 +21,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IVisitorData, clsVisitorData>();
 builder.Services.AddScoped<clsVisitor>();
+builder.Services.AddScoped<IPatientData, clsPatientData>();
+builder.Services.AddScoped<clsPatient>();
 
 
 
