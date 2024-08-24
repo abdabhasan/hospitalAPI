@@ -1,15 +1,21 @@
 using HospitalDataLayer.Infrastructure.DTOs;
 using Npgsql;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
+using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalDataLayer.Infrastructure
 {
-    public class clsPatientData
+    public class clsPatientData : IPatientData
     {
 
-        private static readonly string _connectionString = clsDataLayerSettings.ConnectionString;
+        private readonly string _connectionString;
 
-        public static async Task<List<PatientDTO>> GetAllPatientsAsync()
+        public clsPatientData(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public async Task<List<PatientDTO>> GetAllPatientsAsync()
         {
             var PatientsList = new List<PatientDTO>();
 
@@ -62,7 +68,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<PatientDTO> GetPatientByIdAsync(int PatientId)
+        public async Task<PatientDTO> GetPatientByIdAsync(int PatientId)
         {
             PatientDTO Patient = null;
 
@@ -116,7 +122,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<int> CreatePatientAsync(CreatePatientDTO Patient)
+        public async Task<int> CreatePatientAsync(CreatePatientDTO Patient)
         {
             int NewPatientId = 0;
 
@@ -174,7 +180,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> DeletePatientAsync(int patientId)
+        public async Task<bool> DeletePatientAsync(int patientId)
         {
             bool isDeleted = false;
 
@@ -208,7 +214,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDTO updatePatientDto)
+        public async Task<bool> UpdatePatientAsync(int patientId, UpdatePatientDTO updatePatientDto)
         {
             bool isUpdated = false;
 
@@ -269,7 +275,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<string> GetPatientMedicalHistoryAsync(int patientId)
+        public async Task<string> GetPatientMedicalHistoryAsync(int patientId)
         {
             string medicalHistory = string.Empty;
 
@@ -318,7 +324,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<string> GetPatientAllergiesAsync(int patientId)
+        public async Task<string> GetPatientAllergiesAsync(int patientId)
         {
             string allergies = string.Empty;
 

@@ -1,6 +1,7 @@
 using HospitalDataLayer.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
+using HospitalBusinessLayer.Core;
 
 namespace HospitalPresentation.API.Controllers
 {
@@ -8,6 +9,14 @@ namespace HospitalPresentation.API.Controllers
     [Route("api/patients")]
     public class PatientController : ControllerBase
     {
+
+
+        private readonly clsPatient _patientService;
+
+        public PatientController(clsPatient patientService)
+        {
+            _patientService = patientService;
+        }
 
 
         [HttpGet("GetAllPatients", Name = "GetAllPatients")]
@@ -18,7 +27,7 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
-                List<PatientDTO> PatientsList = await HospitalBusinessLayer.Core.clsPatient.GetAllPatientsAsync();
+                List<PatientDTO> PatientsList = await _patientService.GetAllPatientsAsync();
                 if (PatientsList == null || !PatientsList.Any())
                 {
                     return NotFound("No Patients Found!");
@@ -41,7 +50,7 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
-                PatientDTO Patient = await HospitalBusinessLayer.Core.clsPatient.GetPatientByIdAsync(PatientId);
+                PatientDTO Patient = await _patientService.GetPatientByIdAsync(PatientId);
                 if (Patient == null)
                 {
                     return NotFound($"Patient with Id {PatientId} NOT FOUND!");
@@ -69,7 +78,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid data.");
                 }
 
-                int patientId = await HospitalBusinessLayer.Core.clsPatient.CreatePatientAsync(createPatientDto);
+                int patientId = await _patientService.CreatePatientAsync(createPatientDto);
 
                 return CreatedAtRoute("GetPatientById", new { PatientId = patientId }, patientId);
             }
@@ -93,7 +102,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid patient ID.");
                 }
 
-                bool isDeleted = await HospitalBusinessLayer.Core.clsPatient.DeletePatientAsync(patientId);
+                bool isDeleted = await _patientService.DeletePatientAsync(patientId);
 
                 if (isDeleted)
                 {
@@ -125,7 +134,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid patient ID or data.");
                 }
 
-                bool isUpdated = await HospitalBusinessLayer.Core.clsPatient.UpdatePatientAsync(patientId, updatePatientDto);
+                bool isUpdated = await _patientService.UpdatePatientAsync(patientId, updatePatientDto);
 
                 if (isUpdated)
                 {
@@ -157,7 +166,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid patient ID.");
                 }
 
-                string medicalHistory = await HospitalBusinessLayer.Core.clsPatient.GetPatientMedicalHistoryAsync(patientId);
+                string medicalHistory = await _patientService.GetPatientMedicalHistoryAsync(patientId);
 
                 if (medicalHistory == "Error: Patient not found.")
                 {
@@ -195,7 +204,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid patient ID.");
                 }
 
-                string allergies = await HospitalBusinessLayer.Core.clsPatient.GetPatientAllergiesAsync(patientId);
+                string allergies = await _patientService.GetPatientAllergiesAsync(patientId);
 
                 if (allergies == "Error: Patient not found.")
                 {
