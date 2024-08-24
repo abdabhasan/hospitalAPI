@@ -1,29 +1,38 @@
-using HospitalDataLayer.Infrastructure;
 using HospitalDataLayer.Infrastructure.DTOs.Staff;
+using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
     public class clsStaff
     {
-        public static async Task<List<StaffDTO>> GetAllStaffAsync()
+
+        private readonly IStaffData _staffData;
+
+        public clsStaff(IStaffData staffData)
         {
-            return await clsStaffData.GetAllStaffAsync();
+            _staffData = staffData;
+
         }
-        public static async Task<StaffDTO> GetStaffByIdAsync(int staffId)
+
+        public async Task<List<StaffDTO>> GetAllStaffAsync()
         {
-            return await clsStaffData.GetStaffByIdAsync(staffId);
+            return await _staffData.GetAllStaffAsync();
         }
-        public static async Task<int> CreateStaffAsync(CreateStaffDTO staff)
+        public async Task<StaffDTO> GetStaffByIdAsync(int staffId)
         {
-            return await clsStaffData.CreateStaffAsync(staff);
+            return await _staffData.GetStaffByIdAsync(staffId);
         }
-        public static async Task<bool> UpdateStaffByIdAsync(int staffId, UpdateStaffDTO updateStaffDto)
+        public async Task<int> CreateStaffAsync(CreateStaffDTO staff)
         {
-            return await clsStaffData.UpdateStaffByIdAsync(staffId, updateStaffDto);
+            return await _staffData.CreateStaffAsync(staff);
         }
-        public static async Task<bool> DeleteStaffByIdAsync(int staffId)
+        public async Task<bool> UpdateStaffByIdAsync(int staffId, UpdateStaffDTO updateStaffDto)
         {
-            return await clsStaffData.DeleteStaffByIdAsync(staffId);
+            return await _staffData.UpdateStaffByIdAsync(staffId, updateStaffDto);
+        }
+        public async Task<bool> DeleteStaffByIdAsync(int staffId)
+        {
+            return await _staffData.DeleteStaffByIdAsync(staffId);
         }
 
     }

@@ -25,6 +25,8 @@ builder.Services.AddScoped<IPatientData, clsPatientData>();
 builder.Services.AddScoped<clsPatient>();
 builder.Services.AddScoped<IDoctorData, clsDoctorData>();
 builder.Services.AddScoped<clsDoctor>();
+builder.Services.AddScoped<IStaffData, clsStaffData>();
+builder.Services.AddScoped<clsStaff>();
 
 
 

@@ -1,13 +1,19 @@
 using HospitalDataLayer.Infrastructure.DTOs.Staff;
+using HospitalDataLayer.Infrastructure.Interfaces;
 using Npgsql;
 
 namespace HospitalDataLayer.Infrastructure
 {
-    public class clsStaffData
+    public class clsStaffData : IStaffData
     {
-        private static readonly string _connectionString = clsDataLayerSettings.ConnectionString;
+        private readonly string _connectionString;
 
-        public static async Task<List<StaffDTO>> GetAllStaffAsync()
+        public clsStaffData(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public async Task<List<StaffDTO>> GetAllStaffAsync()
         {
             var StaffList = new List<StaffDTO>();
 
@@ -56,7 +62,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<StaffDTO> GetStaffByIdAsync(int staffId)
+        public async Task<StaffDTO> GetStaffByIdAsync(int staffId)
         {
             StaffDTO staff = null;
 
@@ -106,7 +112,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<int> CreateStaffAsync(CreateStaffDTO staff)
+        public async Task<int> CreateStaffAsync(CreateStaffDTO staff)
         {
             int newStaffId = 0;
 
@@ -156,7 +162,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> UpdateStaffByIdAsync(int staffId, UpdateStaffDTO updateStaffDto)
+        public async Task<bool> UpdateStaffByIdAsync(int staffId, UpdateStaffDTO updateStaffDto)
         {
             bool isUpdated = false;
 
@@ -209,7 +215,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> DeleteStaffByIdAsync(int staffId)
+        public async Task<bool> DeleteStaffByIdAsync(int staffId)
         {
             bool isDeleted = false;
 
