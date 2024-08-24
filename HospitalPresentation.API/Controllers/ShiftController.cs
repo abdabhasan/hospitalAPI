@@ -1,3 +1,4 @@
+using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Shift;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,16 @@ namespace HospitalPresentation.API.Controllers
     public class ShiftController : ControllerBase
     {
 
+
+        private readonly clsShift _shiftService;
+
+        public ShiftController(clsShift shiftService)
+        {
+            _shiftService = shiftService;
+        }
+
+
+
         [HttpGet("GetAllShifts", Name = "GetAllShifts")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -16,7 +27,7 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
-                List<ShiftDTO> ShiftsList = await HospitalBusinessLayer.Core.clsShift.GetAllShiftsAsync();
+                List<ShiftDTO> ShiftsList = await _shiftService.GetAllShiftsAsync();
                 if (ShiftsList == null || !ShiftsList.Any())
                 {
                     return NotFound("No Shifts Found!");
@@ -47,7 +58,7 @@ namespace HospitalPresentation.API.Controllers
                     return StatusCode(StatusCodes.Status400BadRequest, "Staff Id should be bigger than zero!");
                 }
 
-                List<ShiftDTO> ShiftsList = await HospitalBusinessLayer.Core.clsShift.GetStaffShiftsByStaffIdAsync(staffId);
+                List<ShiftDTO> ShiftsList = await _shiftService.GetStaffShiftsByStaffIdAsync(staffId);
                 if (ShiftsList == null || !ShiftsList.Any())
                 {
                     return NotFound("No Shifts Found!");
@@ -76,7 +87,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid data.");
                 }
 
-                bool shiftId = await HospitalBusinessLayer.Core.clsShift.CreateShiftAsync(createShiftDto);
+                bool shiftId = await _shiftService.CreateShiftAsync(createShiftDto);
 
                 if (shiftId == false || shiftId == null)
                 {
@@ -109,7 +120,7 @@ namespace HospitalPresentation.API.Controllers
                 }
 
 
-                bool updateResult = await HospitalBusinessLayer.Core.clsShift.UpdateShiftByIdAsync(shiftId, updateShiftDto);
+                bool updateResult = await _shiftService.UpdateShiftByIdAsync(shiftId, updateShiftDto);
 
                 if (!updateResult)
                 {
@@ -139,7 +150,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid Shift ID.");
                 }
 
-                bool isDeleted = await HospitalBusinessLayer.Core.clsShift.DeleteShiftByIdAsync(doctorId);
+                bool isDeleted = await _shiftService.DeleteShiftByIdAsync(doctorId);
 
                 if (isDeleted)
                 {

@@ -1,30 +1,39 @@
 
-using HospitalDataLayer.Infrastructure;
 using HospitalDataLayer.Infrastructure.DTOs.Shift;
+using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
     public class clsShift
     {
-        public static async Task<List<ShiftDTO>> GetAllShiftsAsync()
+
+        private readonly IShiftData _shiftData;
+
+        public clsShift(IShiftData shiftData)
         {
-            return await clsShiftData.GetAllShiftsAsync();
+            _shiftData = shiftData;
         }
-        public static async Task<List<ShiftDTO>> GetStaffShiftsByStaffIdAsync(int staffId)
+
+
+        public async Task<List<ShiftDTO>> GetAllShiftsAsync()
         {
-            return await clsShiftData.GetStaffShiftsByStaffIdAsync(staffId);
+            return await _shiftData.GetAllShiftsAsync();
         }
-        public static async Task<bool> CreateShiftAsync(CreateShiftDTO shift)
+        public async Task<List<ShiftDTO>> GetStaffShiftsByStaffIdAsync(int staffId)
         {
-            return await clsShiftData.CreateShiftAsync(shift);
+            return await _shiftData.GetStaffShiftsByStaffIdAsync(staffId);
         }
-        public static async Task<bool> UpdateShiftByIdAsync(int shiftId, UpdateShiftDTO shift)
+        public async Task<bool> CreateShiftAsync(CreateShiftDTO shift)
         {
-            return await clsShiftData.UpdateShiftByIdAsync(shiftId, shift);
+            return await _shiftData.CreateShiftAsync(shift);
         }
-        public static async Task<bool> DeleteShiftByIdAsync(int shiftId)
+        public async Task<bool> UpdateShiftByIdAsync(int shiftId, UpdateShiftDTO shift)
         {
-            return await clsShiftData.DeleteShiftByIdAsync(shiftId);
+            return await _shiftData.UpdateShiftByIdAsync(shiftId, shift);
+        }
+        public async Task<bool> DeleteShiftByIdAsync(int shiftId)
+        {
+            return await _shiftData.DeleteShiftByIdAsync(shiftId);
         }
 
 

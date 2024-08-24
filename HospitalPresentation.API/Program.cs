@@ -27,6 +27,8 @@ builder.Services.AddScoped<IDoctorData, clsDoctorData>();
 builder.Services.AddScoped<clsDoctor>();
 builder.Services.AddScoped<IStaffData, clsStaffData>();
 builder.Services.AddScoped<clsStaff>();
+builder.Services.AddScoped<IShiftData, clsShiftData>();
+builder.Services.AddScoped<clsShift>();
 
 
 
