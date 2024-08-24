@@ -1,16 +1,21 @@
 using HospitalDataLayer.Infrastructure.DTOs.Shift;
+using HospitalDataLayer.Infrastructure.Interfaces;
 using Npgsql;
 
 namespace HospitalDataLayer.Infrastructure
 {
 
-    public class clsShiftData
+    public class clsShiftData : IShiftData
     {
-        private static readonly string _connectionString = clsDataLayerSettings.ConnectionString;
+        private readonly string _connectionString;
+
+        public clsShiftData(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
 
 
-
-        public static async Task<List<ShiftDTO>> GetAllShiftsAsync()
+        public async Task<List<ShiftDTO>> GetAllShiftsAsync()
         {
             var shifts = new List<ShiftDTO>();
 
@@ -66,7 +71,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<List<ShiftDTO>> GetStaffShiftsByStaffIdAsync(int staffId)
+        public async Task<List<ShiftDTO>> GetStaffShiftsByStaffIdAsync(int staffId)
         {
             var shifts = new List<ShiftDTO>();
 
@@ -123,7 +128,7 @@ namespace HospitalDataLayer.Infrastructure
             return shifts;
         }
 
-        public static async Task<bool> CreateShiftAsync(CreateShiftDTO shift)
+        public async Task<bool> CreateShiftAsync(CreateShiftDTO shift)
         {
             bool isSuccess = false;
 
@@ -176,7 +181,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> UpdateShiftByIdAsync(int shiftId, UpdateShiftDTO shift)
+        public async Task<bool> UpdateShiftByIdAsync(int shiftId, UpdateShiftDTO shift)
         {
             bool isSuccess = false;
 
@@ -231,7 +236,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> DeleteShiftByIdAsync(int shiftId)
+        public async Task<bool> DeleteShiftByIdAsync(int shiftId)
         {
             bool isSuccess = false;
 
