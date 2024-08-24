@@ -1,4 +1,15 @@
+using HospitalBusinessLayer.Core;
+using HospitalDataLayer.Infrastructure;
+using HospitalDataLayer.Infrastructure.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+// Register the connection string in the DI container
+builder.Services.AddSingleton(sp => builder.Configuration.GetConnectionString("DefaultConnection"));
+
+
 
 // Add services to the container.
 
@@ -7,6 +18,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IVisitorData, clsVisitorData>();
+builder.Services.AddScoped<clsVisitor>();
+
+
+
+
 
 var app = builder.Build();
 
