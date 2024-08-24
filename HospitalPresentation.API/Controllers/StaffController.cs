@@ -1,3 +1,4 @@
+using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Staff;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,15 @@ namespace HospitalPresentation.API.Controllers
     [Route("api/staff")]
     public class StaffController : ControllerBase
     {
+
+        private readonly clsStaff _staffService;
+
+        public StaffController(clsStaff staffService)
+        {
+            _staffService = staffService;
+        }
+
+
         [HttpGet("GetAllStaff", Name = "GetAllStaff")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -15,7 +25,7 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
-                List<StaffDTO> StaffList = await HospitalBusinessLayer.Core.clsStaff.GetAllStaffAsync();
+                List<StaffDTO> StaffList = await _staffService.GetAllStaffAsync();
                 if (StaffList == null || !StaffList.Any())
                 {
                     return NotFound("No Staff Found!");
@@ -38,7 +48,7 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
-                StaffDTO staff = await HospitalBusinessLayer.Core.clsStaff.GetStaffByIdAsync(staffId);
+                StaffDTO staff = await _staffService.GetStaffByIdAsync(staffId);
                 if (staff == null)
                 {
                     return NotFound($"Staff with Id {staffId} NOT FOUND!");
@@ -67,7 +77,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid data.");
                 }
 
-                int staffId = await HospitalBusinessLayer.Core.clsStaff.CreateStaffAsync(createStaffDto);
+                int staffId = await _staffService.CreateStaffAsync(createStaffDto);
 
                 if (staffId == 0 || staffId == null)
                 {
@@ -98,7 +108,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid Staff ID.");
                 }
 
-                bool isUpdated = await HospitalBusinessLayer.Core.clsStaff.UpdateStaffByIdAsync(staffId, UpdateStaffDto);
+                bool isUpdated = await _staffService.UpdateStaffByIdAsync(staffId, UpdateStaffDto);
 
                 if (isUpdated)
                 {
@@ -130,7 +140,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid Staff ID.");
                 }
 
-                bool isDeleted = await HospitalBusinessLayer.Core.clsStaff.DeleteStaffByIdAsync(staffId);
+                bool isDeleted = await _staffService.DeleteStaffByIdAsync(staffId);
 
                 if (isDeleted)
                 {
