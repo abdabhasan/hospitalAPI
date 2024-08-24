@@ -1,33 +1,40 @@
-﻿using HospitalDataLayer.Infrastructure;
-using HospitalDataLayer.Infrastructure.DTOs.Doctor;
+﻿using HospitalDataLayer.Infrastructure.DTOs.Doctor;
+using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core;
 
 public class clsDoctor
 {
-    public static async Task<List<DoctorDTO>> GetAllDoctorsAsync()
+    private readonly IDoctorData _doctorData;
+
+    public clsDoctor(IDoctorData doctorData)
     {
-        return await clsDoctorData.GetAllDoctorsAsync();
+        _doctorData = doctorData;
     }
-    public static async Task<DoctorDTO> GetDoctorByIdAsync(int doctorId)
+
+    public async Task<List<DoctorDTO>> GetAllDoctorsAsync()
     {
-        return await clsDoctorData.GetDoctorByIdAsync(doctorId);
+        return await _doctorData.GetAllDoctorsAsync();
     }
-    public static async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
+    public async Task<DoctorDTO> GetDoctorByIdAsync(int doctorId)
     {
-        return await clsDoctorData.CreateDoctorAsync(doctor);
+        return await _doctorData.GetDoctorByIdAsync(doctorId);
     }
-    public static async Task<string> GetDoctorOfficeNumberAsync(int doctorId)
+    public async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
     {
-        return await clsDoctorData.GetDoctorOfficeNumberAsync(doctorId);
+        return await _doctorData.CreateDoctorAsync(doctor);
     }
-    public static async Task<bool> UpdateDoctorAsync(int doctorId, UpdateDoctorDTO updateDoctorDto)
+    public async Task<string> GetDoctorOfficeNumberAsync(int doctorId)
     {
-        return await clsDoctorData.UpdateDoctorAsync(doctorId, updateDoctorDto);
+        return await _doctorData.GetDoctorOfficeNumberAsync(doctorId);
     }
-    public static async Task<bool> DeleteDoctorAsync(int doctorId)
+    public async Task<bool> UpdateDoctorAsync(int doctorId, UpdateDoctorDTO updateDoctorDto)
     {
-        return await clsDoctorData.DeleteDoctorAsync(doctorId);
+        return await _doctorData.UpdateDoctorAsync(doctorId, updateDoctorDto);
+    }
+    public async Task<bool> DeleteDoctorAsync(int doctorId)
+    {
+        return await _doctorData.DeleteDoctorAsync(doctorId);
     }
 
 }

@@ -1,13 +1,19 @@
 using HospitalDataLayer.Infrastructure.DTOs.Doctor;
+using HospitalDataLayer.Infrastructure.Interfaces;
 using Npgsql;
 
 namespace HospitalDataLayer.Infrastructure
 {
-    public class clsDoctorData
+    public class clsDoctorData : IDoctorData
     {
-        private static readonly string _connectionString = clsDataLayerSettings.ConnectionString;
+        private readonly string _connectionString;
 
-        public static async Task<List<DoctorDTO>> GetAllDoctorsAsync()
+        public clsDoctorData(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public async Task<List<DoctorDTO>> GetAllDoctorsAsync()
         {
             var DoctorsList = new List<DoctorDTO>();
 
@@ -58,7 +64,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<DoctorDTO> GetDoctorByIdAsync(int doctorId)
+        public async Task<DoctorDTO> GetDoctorByIdAsync(int doctorId)
         {
             DoctorDTO doctor = null;
 
@@ -110,7 +116,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
+        public async Task<int> CreateDoctorAsync(CreateDoctorDTO doctor)
         {
             int newDoctorId = 0;
 
@@ -164,7 +170,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<string> GetDoctorOfficeNumberAsync(int doctorId)
+        public async Task<string> GetDoctorOfficeNumberAsync(int doctorId)
         {
             string officeNumber = string.Empty;
 
@@ -213,7 +219,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> UpdateDoctorAsync(int doctorId, UpdateDoctorDTO updateDoctorDto)
+        public async Task<bool> UpdateDoctorAsync(int doctorId, UpdateDoctorDTO updateDoctorDto)
         {
             bool isUpdated = false;
 
@@ -270,7 +276,7 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public static async Task<bool> DeleteDoctorAsync(int doctorId)
+        public async Task<bool> DeleteDoctorAsync(int doctorId)
         {
             bool isDeleted = false;
 

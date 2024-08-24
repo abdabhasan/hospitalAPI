@@ -1,0 +1,15 @@
+
+using HospitalDataLayer.Infrastructure.DTOs.Doctor;
+
+namespace HospitalDataLayer.Infrastructure.Interfaces
+{
+    public interface IDoctorData
+    {
+        Task<List<DoctorDTO>> GetAllDoctorsAsync();
+        Task<DoctorDTO> GetDoctorByIdAsync(int doctorId);
+        Task<int> CreateDoctorAsync(CreateDoctorDTO doctor);
+        Task<string> GetDoctorOfficeNumberAsync(int doctorId);
+        Task<bool> UpdateDoctorAsync(int doctorId, UpdateDoctorDTO updateDoctorDto);
+        Task<bool> DeleteDoctorAsync(int doctorId);
+    }
+}

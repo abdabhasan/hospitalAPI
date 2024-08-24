@@ -1,3 +1,4 @@
+using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Doctor;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,14 @@ namespace HospitalPresentation.API.Controllers
     public class DoctorController : ControllerBase
     {
 
+        private readonly clsDoctor _doctorService;
+
+        public DoctorController(clsDoctor doctorService)
+        {
+            _doctorService = doctorService;
+        }
+
+
         [HttpGet("GetAllDoctors", Name = "GetAllDoctors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -16,7 +25,7 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
-                List<DoctorDTO> DoctorsList = await HospitalBusinessLayer.Core.clsDoctor.GetAllDoctorsAsync();
+                List<DoctorDTO> DoctorsList = await _doctorService.GetAllDoctorsAsync();
                 if (DoctorsList == null || !DoctorsList.Any())
                 {
                     return NotFound("No Doctors Found!");
@@ -39,7 +48,7 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
-                DoctorDTO doctor = await HospitalBusinessLayer.Core.clsDoctor.GetDoctorByIdAsync(doctorId);
+                DoctorDTO doctor = await _doctorService.GetDoctorByIdAsync(doctorId);
                 if (doctor == null)
                 {
                     return NotFound($"Doctor with Id {doctorId} NOT FOUND!");
@@ -68,7 +77,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid data.");
                 }
 
-                int doctorId = await HospitalBusinessLayer.Core.clsDoctor.CreateDoctorAsync(createDoctorDto);
+                int doctorId = await _doctorService.CreateDoctorAsync(createDoctorDto);
 
                 if (doctorId == 0 || doctorId == null)
                 {
@@ -99,7 +108,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid doctor ID.");
                 }
 
-                string officeNumber = await HospitalBusinessLayer.Core.clsDoctor.GetDoctorOfficeNumberAsync(doctorId);
+                string officeNumber = await _doctorService.GetDoctorOfficeNumberAsync(doctorId);
 
                 if (officeNumber == "Error: Doctor not found.")
                 {
@@ -139,7 +148,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid Doctor ID.");
                 }
 
-                bool isUpdated = await HospitalBusinessLayer.Core.clsDoctor.UpdateDoctorAsync(doctorId, UpdateDoctorDto);
+                bool isUpdated = await _doctorService.UpdateDoctorAsync(doctorId, UpdateDoctorDto);
 
                 if (isUpdated)
                 {
@@ -172,7 +181,7 @@ namespace HospitalPresentation.API.Controllers
                     return BadRequest("Invalid Doctor ID.");
                 }
 
-                bool isDeleted = await HospitalBusinessLayer.Core.clsDoctor.DeleteDoctorAsync(doctorId);
+                bool isDeleted = await _doctorService.DeleteDoctorAsync(doctorId);
 
                 if (isDeleted)
                 {
