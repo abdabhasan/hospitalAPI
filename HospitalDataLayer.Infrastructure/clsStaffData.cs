@@ -41,7 +41,7 @@ namespace HospitalDataLayer.Infrastructure
                                 Email = reader.GetString(5),
                                 BirthDate = reader.GetDateTime(6),
                                 Role = reader.GetString(7),
-                                Qualifications = reader.GetString(9),
+                                Qualifications = reader.GetString(8),
                             };
                             StaffList.Add(staff);
                         }
@@ -92,7 +92,7 @@ namespace HospitalDataLayer.Infrastructure
                                     Email = reader.GetString(5),
                                     BirthDate = reader.GetDateTime(6),
                                     Role = reader.GetString(7),
-                                    Qualifications = reader.GetString(9),
+                                    Qualifications = reader.GetString(8),
                                 };
                             }
                         }
