@@ -39,5 +39,39 @@ namespace HospitalPresentation.API.Controllers
 
         }
 
+
+
+        [HttpDelete("DeleteVisitor/{visitorId}", Name = "DeleteVisitor")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> DeleteVisitorByIdAsync(int visitorId)
+        {
+            try
+            {
+                if (visitorId <= 0)
+                {
+                    return BadRequest("Invalid Visitor ID.");
+                }
+
+                bool isDeleted = await _visitorService.DeleteVisitorByIdAsync(visitorId);
+
+                if (isDeleted)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("Visitor not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+
     }
 }

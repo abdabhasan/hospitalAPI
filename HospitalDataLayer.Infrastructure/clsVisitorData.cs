@@ -60,6 +60,35 @@ namespace HospitalDataLayer.Infrastructure
             return visitors;
         }
 
+        public async Task<bool> DeleteVisitorByIdAsync(int visitorId)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                await using var conn = new NpgsqlConnection(_connectionString);
+                await conn.OpenAsync().ConfigureAwait(false);
+
+                string query = "CALL delete_visitor_by_id(@visitor_id)";
+
+                await using var cmd = new NpgsqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@visitor_id", visitorId);
+
+                var result = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+
+                isDeleted = result > 0;
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while deleting visitor: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting visitor: {ex.Message}");
+            }
+
+            return isDeleted;
+        }
 
 
     }

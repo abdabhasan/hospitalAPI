@@ -6,5 +6,6 @@ namespace HospitalDataLayer.Infrastructure.Interfaces
     public interface IVisitorData
     {
         Task<IEnumerable<VisitorDTO>> GetAllVisitorsAsync();
+        Task<bool> DeleteVisitorByIdAsync(int visitorId);
     }
 }
