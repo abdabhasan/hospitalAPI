@@ -69,7 +69,7 @@ namespace HospitalDataLayer.Infrastructure
                 await using var conn = new NpgsqlConnection(_connectionString);
                 await conn.OpenAsync().ConfigureAwait(false);
 
-                string query = "CALL delete_visitor_by_id(@visitor_id)";
+                string query = "SELECT delete_visitor_by_id(@visitor_id)";
 
                 await using var cmd = new NpgsqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@visitor_id", visitorId);
