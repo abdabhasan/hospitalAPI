@@ -21,7 +21,11 @@ namespace HospitalBusinessLayer.Core
         public async Task<IEnumerable<InsuranceClaimDTO>> GetInsuranceClaimsForPatientByPatientNameAsync(string patientName)
         {
             return await _insuranceClaim.GetInsuranceClaimsForPatientByPatientNameAsync(patientName);
+        }
 
+        public async Task<IEnumerable<InsuranceClaimDTO>> GetInsuranceClaimsForPatientByPatientIdAsync(int patientId)
+        {
+            return await _insuranceClaim.GetInsuranceClaimsForPatientByPatientIdAsync(patientId);
         }
 
 

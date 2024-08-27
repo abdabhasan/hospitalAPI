@@ -64,5 +64,29 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [HttpGet("GetInsuranceClaimsForPatientByPatientId", Name = "GetInsuranceClaimsForPatientByPatientId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<InsuranceClaimDTO>>> GetInsuranceClaimsForPatientByPatientIdAsync(int patientId)
+        {
+
+            try
+            {
+                IEnumerable<InsuranceClaimDTO> InsuranceClaimsList = await _insuranceClaimService.GetInsuranceClaimsForPatientByPatientIdAsync(patientId);
+                if (InsuranceClaimsList == null || !InsuranceClaimsList.Any())
+                {
+                    return NotFound("No Insurance Claims Found!");
+                }
+                return Ok(InsuranceClaimsList);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+
+        }
+
+
+
     }
 }
