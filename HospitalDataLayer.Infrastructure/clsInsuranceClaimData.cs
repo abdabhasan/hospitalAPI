@@ -1,4 +1,5 @@
 using HospitalDataLayer.Infrastructure.DTOs;
+using HospitalDataLayer.Infrastructure.DTOs.InsuranceClaim;
 using HospitalDataLayer.Infrastructure.Interfaces;
 using Npgsql;
 
@@ -159,6 +160,52 @@ namespace HospitalDataLayer.Infrastructure
 
             return insuranceClaims;
         }
+
+
+        public async Task<int> CreateInsuranceClaimAsync(CreateInsuranceClaimDTO insuranceClaim)
+        {
+            int newClaimId = 0;
+
+            try
+            {
+                await using var conn = new NpgsqlConnection(_connectionString);
+                await conn.OpenAsync().ConfigureAwait(false);
+
+                string query = "SELECT create_insurance_claim( " +
+                                    "@patientId::int, " +
+                                    "@insuranceProvider::text, " +
+                                    "@policyNumber::text," +
+                                    "@claimDate::date, " +
+                                    "@claimAmount::int, " +
+                                    "@claimStatus::text, " +
+                                    "@notes::text )";
+
+
+                await using var cmd = new NpgsqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("patientId", NpgsqlTypes.NpgsqlDbType.Integer, insuranceClaim.PatientId);
+                cmd.Parameters.AddWithValue("insuranceProvider", NpgsqlTypes.NpgsqlDbType.Text, insuranceClaim.InsuranceProvider);
+                cmd.Parameters.AddWithValue("policyNumber", NpgsqlTypes.NpgsqlDbType.Text, insuranceClaim.PolicyNumber ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("claimDate", NpgsqlTypes.NpgsqlDbType.Date, insuranceClaim.ClaimDate);
+                cmd.Parameters.AddWithValue("claimAmount", NpgsqlTypes.NpgsqlDbType.Integer, insuranceClaim.ClaimAmount);
+                cmd.Parameters.AddWithValue("claimStatus", NpgsqlTypes.NpgsqlDbType.Text, insuranceClaim.ClaimStatus);
+                cmd.Parameters.AddWithValue("notes", NpgsqlTypes.NpgsqlDbType.Text, insuranceClaim.Notes ?? (object)DBNull.Value);
+
+
+                newClaimId = (int)await cmd.ExecuteScalarAsync().ConfigureAwait(false);
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while creating insurance claim: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while creating insurance claim: {ex.Message}");
+            }
+
+            return newClaimId;
+        }
+
+
 
     }
 }

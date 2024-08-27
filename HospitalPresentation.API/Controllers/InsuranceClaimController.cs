@@ -1,5 +1,6 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs;
+using HospitalDataLayer.Infrastructure.DTOs.InsuranceClaim;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalPresentation.API.Controllers
@@ -84,6 +85,36 @@ namespace HospitalPresentation.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
+        }
+
+
+
+        [HttpPost("CreateInsuranceClaim", Name = "CreateInsuranceClaim")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> CreateInsuranceClaimAsync([FromBody] CreateInsuranceClaimDTO createInsuranceClaimDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid data.");
+                }
+
+                int insuranceClaimId = await _insuranceClaimService.CreateInsuranceClaimAsync(createInsuranceClaimDto);
+
+                if (insuranceClaimId == 0 || insuranceClaimId == null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest);
+                }
+
+                return CreatedAtRoute("GetInsuranceClaimsForPatientByPatientId", new { InsuranceClaimId = insuranceClaimId }, insuranceClaimId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
         }
 
 
