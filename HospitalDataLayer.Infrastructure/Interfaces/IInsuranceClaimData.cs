@@ -6,7 +6,7 @@ namespace HospitalDataLayer.Infrastructure.Interfaces
     public interface IInsuranceClaimData
     {
         Task<IEnumerable<InsuranceClaimDTO>> GetAllInsuranceClaimsAsync();
-        Task<InsuranceClaimDTO> GetInsuranceClaimsForPatientByPatientIdAsync(int patinetId);
-        Task<InsuranceClaimDTO> GetInsuranceClaimsForPatientByPatientNameAsync(string patinetName);
+        Task<IEnumerable<InsuranceClaimDTO>> GetInsuranceClaimsForPatientByPatientIdAsync(int patinetId);
+        Task<IEnumerable<InsuranceClaimDTO>> GetInsuranceClaimsForPatientByPatientNameAsync(string patientName);
     }
 }
