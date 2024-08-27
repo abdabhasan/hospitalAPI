@@ -10,5 +10,6 @@ namespace HospitalDataLayer.Infrastructure.Interfaces
         Task<IEnumerable<InsuranceClaimDTO>> GetInsuranceClaimsForPatientByPatientIdAsync(int patinetId);
         Task<IEnumerable<InsuranceClaimDTO>> GetInsuranceClaimsForPatientByPatientNameAsync(string patientName);
         Task<int> CreateInsuranceClaimAsync(CreateInsuranceClaimDTO insuranceClaim);
+        Task<bool> DeleteInsuranceClaimAsync(int claimId);
     }
 }

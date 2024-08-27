@@ -119,5 +119,38 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [HttpDelete("DeleteInsuranceClaim/{insuranceClaimId}", Name = "DeleteInsuranceClaim")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> DeleteInsuranceClaimAsync(int insuranceClaimId)
+        {
+            try
+            {
+                if (insuranceClaimId <= 0)
+                {
+                    return BadRequest("Invalid InsuranceClaim ID.");
+                }
+
+                bool isDeleted = await _insuranceClaimService.DeleteInsuranceClaimAsync(insuranceClaimId);
+
+                if (isDeleted)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("InsuranceClaim not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+
+
     }
 }

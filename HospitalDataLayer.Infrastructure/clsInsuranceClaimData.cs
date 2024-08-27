@@ -207,5 +207,41 @@ namespace HospitalDataLayer.Infrastructure
 
 
 
+        public async Task<bool> DeleteInsuranceClaimAsync(int claimId)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                await using var conn = new NpgsqlConnection(_connectionString);
+                await conn.OpenAsync().ConfigureAwait(false);
+
+                string query = "SELECT delete_insurance_claim(@ClaimId)";
+
+                await using var cmd = new NpgsqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("ClaimId", claimId);
+
+                var result = await cmd.ExecuteScalarAsync().ConfigureAwait(false);
+
+                if (result != null && bool.TryParse(result.ToString(), out bool success))
+                {
+                    isDeleted = success;
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while deleting insurance claim: {npgsqlEx.Message}");
+                // Log or rethrow the exception as needed
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting insurance claim: {ex.Message}");
+                // Log or rethrow the exception as needed
+            }
+
+            return isDeleted;
+        }
+
+
     }
 }

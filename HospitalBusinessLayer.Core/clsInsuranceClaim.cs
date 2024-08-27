@@ -34,6 +34,11 @@ namespace HospitalBusinessLayer.Core
             return await _insuranceClaim.CreateInsuranceClaimAsync(insuranceClaim);
         }
 
+        public async Task<bool> DeleteInsuranceClaimAsync(int claimId)
+        {
+            return await _insuranceClaim.DeleteInsuranceClaimAsync(claimId);
+        }
+
 
     }
 }
