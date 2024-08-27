@@ -29,6 +29,8 @@ builder.Services.AddScoped<IStaffData, clsStaffData>();
 builder.Services.AddScoped<clsStaff>();
 builder.Services.AddScoped<IShiftData, clsShiftData>();
 builder.Services.AddScoped<clsShift>();
+builder.Services.AddScoped<IInsuranceClaimData, clsInsuranceClaimData>();
+builder.Services.AddScoped<clsInsuranceClaim>();
 
 
 
