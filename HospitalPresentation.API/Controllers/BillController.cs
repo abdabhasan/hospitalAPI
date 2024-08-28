@@ -79,7 +79,6 @@ namespace HospitalPresentation.API.Controllers
 
 
 
-
         [HttpGet("GetAllBills", Name = "GetAllBills")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -102,6 +101,29 @@ namespace HospitalPresentation.API.Controllers
 
         }
 
+
+
+        [HttpGet("GetBillById", Name = "GetBillById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<BillDTO>> GetBillByIdAsync(int BillId)
+        {
+
+            try
+            {
+                BillDTO Bill = await _billService.GetBillByIdAsync(BillId);
+                if (Bill == null)
+                {
+                    return NotFound($"Bill with Id {BillId} NOT FOUND!");
+                }
+                return Ok(Bill);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+
+        }
 
 
 
