@@ -93,9 +93,60 @@ namespace HospitalDataLayer.Infrastructure
             return isDeleted;
         }
 
-        public Task<IEnumerable<BillDTO>> GetAllBillsAsync()
+        public async Task<IEnumerable<BillDTO>> GetAllBillsAsync()
         {
-            throw new NotImplementedException();
+            var bills = new List<BillDTO>();
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "SELECT bill_id, " +
+                                    "patient_id, " +
+                                    "amount, " +
+                                    "date_issued, " +
+                                    "due_date, " +
+                                    "payment_status, " +
+                                    "notes, " +
+                                    "payment_method " +
+                                    "FROM get_all_bills()";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                var bill = new BillDTO
+                                {
+                                    Id = reader.GetInt32(0),
+                                    PatinetId = reader.GetInt32(1),
+                                    Amount = reader.GetInt32(2),
+                                    DateIssued = reader.GetDateTime(3),
+                                    DueDate = reader.IsDBNull(4) ? (DateTime?)null : reader.GetDateTime(4),
+                                    PaymentStatus = reader.GetString(5),
+                                    Notes = reader.IsDBNull(6) ? string.Empty : reader.GetString(6),
+                                    PaymentMethod = reader.GetString(7)
+                                };
+
+                                bills.Add(bill);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while retrieving bills: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving bills: {ex.Message}");
+            }
+
+            return bills;
         }
 
         public Task<BillDTO> GetBillByIdAsync(int billId)

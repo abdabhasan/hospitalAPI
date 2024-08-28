@@ -47,8 +47,6 @@ namespace HospitalPresentation.API.Controllers
 
 
 
-
-
         [HttpDelete("DeleteBill/{billId}", Name = "DeleteBill")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,6 +76,32 @@ namespace HospitalPresentation.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
+
+
+
+
+        [HttpGet("GetAllBills", Name = "GetAllBills")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<BillDTO>>> GetAllBillsAsync()
+        {
+
+            try
+            {
+                IEnumerable<BillDTO> BillsList = await _billService.GetAllBillsAsync();
+                if (BillsList == null || !BillsList.Any())
+                {
+                    return NotFound("No Bills Found!");
+                }
+                return Ok(BillsList);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+
+        }
+
 
 
 

@@ -21,5 +21,10 @@ namespace HospitalBusinessLayer.Core
         {
             return await _billData.DeleteBillAsyncById(billId);
         }
+
+        public async Task<IEnumerable<BillDTO>> GetAllBillsAsync()
+        {
+            return await _billData.GetAllBillsAsync();
+        }
     }
 }
