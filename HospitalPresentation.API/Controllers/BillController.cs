@@ -45,5 +45,41 @@ namespace HospitalPresentation.API.Controllers
             }
         }
 
+
+
+
+
+        [HttpDelete("DeleteBill/{billId}", Name = "DeleteBill")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> DeleteBillAsync(int billId)
+        {
+            try
+            {
+                if (billId <= 0)
+                {
+                    return BadRequest("Invalid bill ID.");
+                }
+
+                bool isDeleted = await _billService.DeleteBillAsyncById(billId);
+
+                if (isDeleted)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return NotFound("Bill not found or could not be deleted.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
+
     }
 }

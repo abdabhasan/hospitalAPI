@@ -60,9 +60,37 @@ namespace HospitalDataLayer.Infrastructure
         }
 
 
-        public Task<bool> DeleteBillAsync(int billId)
+        public async Task<bool> DeleteBillAsyncById(int billId)
         {
-            throw new NotImplementedException();
+            bool isDeleted = false;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+
+                    string query = "DELETE FROM bills WHERE bill_id = @BillId";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("BillId", billId);
+
+                        int affectedRows = await cmd.ExecuteNonQueryAsync();
+                        isDeleted = affectedRows > 0;
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                Console.WriteLine($"Database error occurred while deleting the bill: {npgsqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting the bill: {ex.Message}");
+            }
+
+            return isDeleted;
         }
 
         public Task<IEnumerable<BillDTO>> GetAllBillsAsync()

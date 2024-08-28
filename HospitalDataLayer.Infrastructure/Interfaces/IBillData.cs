@@ -9,6 +9,6 @@ namespace HospitalDataLayer.Infrastructure.Interfaces
         Task<IEnumerable<BillDTO>> GetBillsForPatientByPatientNameAsync(string patientName);
         Task<BillDTO> GetBillByIdAsync(int billId);
         Task<int> CreateBillAsync(CreateBillDTO bill);
-        Task<bool> DeleteBillAsync(int billId);
+        Task<bool> DeleteBillAsyncById(int billId);
     }
 }

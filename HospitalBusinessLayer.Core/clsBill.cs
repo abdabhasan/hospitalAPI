@@ -16,5 +16,10 @@ namespace HospitalBusinessLayer.Core
         {
             return await _billData.CreateBillAsync(bill);
         }
+
+        public async Task<bool> DeleteBillAsyncById(int billId)
+        {
+            return await _billData.DeleteBillAsyncById(billId);
+        }
     }
 }
