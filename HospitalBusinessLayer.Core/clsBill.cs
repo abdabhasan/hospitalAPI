@@ -31,5 +31,10 @@ namespace HospitalBusinessLayer.Core
         {
             return await _billData.GetBillByIdAsync(billId);
         }
+
+        public async Task<IEnumerable<BillDTO>> GetBillsForPatientByPatientIdAsync(int patientId)
+        {
+            return await _billData.GetBillsForPatientByPatientIdAsync(patientId);
+        }
     }
 }

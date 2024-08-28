@@ -127,5 +127,29 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [HttpGet("GetBillsForPatientByPatientId", Name = "GetBillsForPatientByPatientId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<BillDTO>>> GetBillsForPatientByPatientIdAsync(int patientId)
+        {
+
+            try
+            {
+                IEnumerable<BillDTO> BillsList = await _billService.GetBillsForPatientByPatientIdAsync(patientId);
+                if (BillsList == null || !BillsList.Any())
+                {
+                    return NotFound("No Bills Found!");
+                }
+                return Ok(BillsList);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+
+        }
+
+
+
     }
 }
