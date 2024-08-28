@@ -1,5 +1,6 @@
 using HospitalDataLayer.Infrastructure.DTOs.Staff;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace HospitalDataLayer.Infrastructure
@@ -7,10 +8,12 @@ namespace HospitalDataLayer.Infrastructure
     public class clsStaffData : IStaffData
     {
         private readonly string _connectionString;
+        private readonly ILogger<clsStaffData> _logger;
 
-        public clsStaffData(string connectionString)
+        public clsStaffData(string connectionString, ILogger<clsStaffData> logger)
         {
             _connectionString = connectionString;
+            _logger = logger;
         }
 
         public async Task<List<StaffDTO>> GetAllStaffAsync()
@@ -50,11 +53,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while fetching Staff.: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while fetching Staff. ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while fetching Staff.: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while fetching Staff. ");
             }
 
             return StaffList;
@@ -101,11 +104,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while fetching the Staff by ID: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while fetching the Staff by ID ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while fetching the Staff by ID: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while fetching the Staff by ID ");
             }
 
             return staff;
@@ -151,11 +154,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while creating the Staff: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while creating the Staff ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while creating the Staff: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while creating the Staff ");
             }
 
             return newStaffId;
@@ -204,11 +207,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while updating the Staff: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while updating the Staff ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while updating the Staff: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while updating the Staff ");
             }
 
             return isUpdated;
@@ -238,11 +241,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while deleting the Staff: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while deleting the Staff ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while deleting the Staff: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while deleting the Staff ");
             }
 
             return isDeleted;
