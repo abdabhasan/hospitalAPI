@@ -1,5 +1,6 @@
 using HospitalDataLayer.Infrastructure.DTOs.Bill;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace HospitalDataLayer.Infrastructure
@@ -8,9 +9,11 @@ namespace HospitalDataLayer.Infrastructure
     {
 
         private readonly string _connectionString;
-        public clsBillData(string connectionString)
+        private readonly ILogger<clsBillData> _logger;
+        public clsBillData(string connectionString, ILogger<clsBillData> logger)
         {
             _connectionString = connectionString;
+            _logger = logger;
         }
 
 
@@ -49,11 +52,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while creating the bill: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while creating the bill ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while creating the bill: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while creating the bill ");
             }
 
             return newBillId;
@@ -83,11 +86,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while deleting the bill: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while deleting the bill ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while deleting the bill: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while deleting the bill ");
             }
 
             return isDeleted;
@@ -139,11 +142,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving bills: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving bills ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving bills: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving bills ");
             }
 
             return bills;
@@ -195,11 +198,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving the bill: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving the bill ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving the bill: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving the bill ");
             }
 
             return bill;
@@ -253,11 +256,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving bills: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving bills ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving bills: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving bills ");
             }
 
             return bills;
@@ -311,11 +314,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving bills: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving bills ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving bills: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving bills ");
             }
 
             return bills;
