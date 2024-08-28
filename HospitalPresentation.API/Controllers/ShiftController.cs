@@ -11,17 +11,21 @@ namespace HospitalPresentation.API.Controllers
 
 
         private readonly clsShift _shiftService;
+        private readonly ILogger<ShiftController> _logger;
 
-        public ShiftController(clsShift shiftService)
+        public ShiftController(clsShift shiftService, ILogger<ShiftController> logger)
         {
             _shiftService = shiftService;
+            _logger = logger;
         }
 
 
 
         [HttpGet("GetAllShifts", Name = "GetAllShifts")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<ShiftDTO>>> GetAllShiftsAsync()
         {
 
@@ -36,6 +40,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING ALL SHIFTS");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -47,6 +52,7 @@ namespace HospitalPresentation.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<ShiftDTO>>> GetStaffShiftsByStaffIdAsync(int staffId)
         {
 
@@ -67,6 +73,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING SHIFTS BY STAFF ID");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -98,6 +105,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while CREATING SHIFT");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -131,6 +139,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while UPDATING SHIFT");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -139,6 +148,7 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpDelete("DeleteShift/{doctorId}", Name = "DeleteShift")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteShiftByIdAsync(int doctorId)
@@ -163,6 +173,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while DELETING SHIFT");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
