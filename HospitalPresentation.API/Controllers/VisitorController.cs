@@ -10,16 +10,21 @@ namespace HospitalPresentation.API.Controllers
     {
 
         private readonly clsVisitor _visitorService;
+        private readonly ILogger<VisitorController> _logger;
 
-        public VisitorController(clsVisitor visitorService)
+
+        public VisitorController(clsVisitor visitorService, ILogger<VisitorController> logger)
         {
             _visitorService = visitorService;
+            _logger = logger;
         }
 
 
         [HttpGet("GetAllVisitors", Name = "GetAllVisitors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<VisitorDTO>>> GetAllVisitorsAsync()
         {
 
@@ -34,6 +39,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING ALL VISITORS");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -43,7 +49,9 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetVisitorByName", Name = "GetVisitorByName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<VisitorDTO>>> GetVisitorByNameAsync(string visitorName)
         {
 
@@ -58,6 +66,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING VISITOR BY NAME");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -67,6 +76,7 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpDelete("DeleteVisitor/{visitorId}", Name = "DeleteVisitor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteVisitorByIdAsync(int visitorId)
@@ -91,6 +101,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while DELETING VISITOR");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }

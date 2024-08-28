@@ -1,5 +1,6 @@
 using HospitalDataLayer.Infrastructure.DTOs.Visitor;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 
@@ -9,10 +10,12 @@ namespace HospitalDataLayer.Infrastructure
     {
 
         private readonly string _connectionString;
+        private readonly ILogger<clsVisitorData> _logger;
 
-        public clsVisitorData(string connectionString)
+        public clsVisitorData(string connectionString, ILogger<clsVisitorData> logger)
         {
             _connectionString = connectionString;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<VisitorDTO>> GetAllVisitorsAsync()
@@ -50,11 +53,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving visitors: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving visitors ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving visitors: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving visitors ");
             }
 
             return visitors;
@@ -80,11 +83,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while deleting visitor: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while deleting visitor ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while deleting visitor: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while deleting visitor ");
             }
 
             return isDeleted;
@@ -127,11 +130,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving visitor by name: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving visitor by name ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving visitor by name: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving visitor by name ");
             }
 
             return visitors;
