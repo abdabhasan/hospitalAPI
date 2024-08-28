@@ -2,6 +2,7 @@ using HospitalDataLayer.Infrastructure.DTOs;
 using Npgsql;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace HospitalDataLayer.Infrastructure
 {
@@ -9,10 +10,12 @@ namespace HospitalDataLayer.Infrastructure
     {
 
         private readonly string _connectionString;
+        private readonly ILogger<clsPatientData> _logger;
 
-        public clsPatientData(string connectionString)
+        public clsPatientData(string connectionString, ILogger<clsPatientData> logger)
         {
             _connectionString = connectionString;
+            _logger = logger;
         }
 
         public async Task<List<PatientDTO>> GetAllPatientsAsync()
@@ -56,11 +59,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while fetching patients.: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while fetching patients. ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while fetching patients.: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while fetching patients. ");
             }
 
             return PatientsList;
@@ -111,11 +114,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while fetching the patient by ID: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while fetching the patient by ID ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while fetching the patient by ID: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while fetching the patient by ID ");
             }
 
             return Patient;
@@ -169,11 +172,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while creating the patient: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while creating the patient ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while creating the patient: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while creating the patient ");
             }
 
             return NewPatientId;
@@ -203,11 +206,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while deleting the patient: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while deleting the patient ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while deleting the patient: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while deleting the patient ");
             }
 
             return isDeleted;
@@ -264,11 +267,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while updating the patient: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while updating the patient ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while updating the patient: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while updating the patient ");
             }
 
             return isUpdated;
@@ -311,12 +314,12 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving the patient's medical history: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving the patient's medical history ");
                 medicalHistory = "An error occurred while retrieving the medical history.";
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving the patient's medical history: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving the patient's medical history ");
                 medicalHistory = "An error occurred while retrieving the medical history.";
             }
 
@@ -360,12 +363,12 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving the patient's allergies: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving the patient's allergies ");
                 allergies = "An error occurred while retrieving the allergies.";
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving the patient's allergies: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving the patient's allergies ");
                 allergies = "An error occurred while retrieving the allergies.";
             }
 
