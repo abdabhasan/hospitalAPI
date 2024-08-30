@@ -46,7 +46,7 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("Notes", bill.Notes);
                         cmd.Parameters.AddWithValue("PaymentMethod", bill.PaymentMethod);
 
-                        newBillId = (int)await cmd.ExecuteScalarAsync();
+                        newBillId = (await cmd.ExecuteScalarAsync() as int?) ?? 0;
                     }
                 }
             }
@@ -154,7 +154,7 @@ namespace HospitalDataLayer.Infrastructure
 
         public async Task<BillDTO> GetBillByIdAsync(int billId)
         {
-            BillDTO bill = null;
+            BillDTO? bill = null;
 
             try
             {
@@ -205,7 +205,7 @@ namespace HospitalDataLayer.Infrastructure
                 _logger.LogError(ex, "An error occurred while retrieving the bill ");
             }
 
-            return bill;
+            return bill!;
         }
 
         public async Task<IEnumerable<BillDTO>> GetBillsForPatientByPatientIdAsync(int patientId)

@@ -112,7 +112,7 @@ namespace HospitalPresentation.API.Controllers
 
                 int insuranceClaimId = await _insuranceClaimService.CreateInsuranceClaimAsync(createInsuranceClaimDto);
 
-                if (insuranceClaimId == 0 || insuranceClaimId == null)
+                if (insuranceClaimId == 0)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest);
                 }

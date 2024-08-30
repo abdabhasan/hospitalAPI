@@ -87,7 +87,7 @@ namespace HospitalPresentation.API.Controllers
 
                 int staffId = await _staffService.CreateStaffAsync(createStaffDto);
 
-                if (staffId == 0 || staffId == null)
+                if (staffId == 0)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest);
                 }

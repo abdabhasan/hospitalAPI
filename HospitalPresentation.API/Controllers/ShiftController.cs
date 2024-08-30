@@ -96,7 +96,7 @@ namespace HospitalPresentation.API.Controllers
 
                 bool shiftId = await _shiftService.CreateShiftAsync(createShiftDto);
 
-                if (shiftId == false || shiftId == null)
+                if (shiftId == false)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest);
                 }

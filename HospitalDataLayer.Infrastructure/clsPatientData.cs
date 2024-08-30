@@ -73,7 +73,7 @@ namespace HospitalDataLayer.Infrastructure
 
         public async Task<PatientDTO> GetPatientByIdAsync(int PatientId)
         {
-            PatientDTO Patient = null;
+            PatientDTO? Patient = null;
 
             try
             {
@@ -121,7 +121,7 @@ namespace HospitalDataLayer.Infrastructure
                 _logger.LogError(ex, "An error occurred while fetching the patient by ID ");
             }
 
-            return Patient;
+            return Patient!;
         }
 
 
@@ -161,12 +161,12 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("BirthDate", Patient.BirthDate);
                         cmd.Parameters.AddWithValue("EmergencyContactName", Patient.EmergencyContactName);
                         cmd.Parameters.AddWithValue("EmergencyContactPhone", Patient.EmergencyContactPhone);
-                        cmd.Parameters.AddWithValue("InsuranceProvider", Patient.InsuranceProvider);
-                        cmd.Parameters.AddWithValue("InsurancePolicyNumber", Patient.InsurancePolicyNumber);
-                        cmd.Parameters.AddWithValue("MedicalHistory", Patient.MedicalHistory);
-                        cmd.Parameters.AddWithValue("Allergies", Patient.Allergies);
+                        cmd.Parameters.AddWithValue("InsuranceProvider", Patient.InsuranceProvider ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("InsurancePolicyNumber", Patient.InsurancePolicyNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("MedicalHistory", Patient.MedicalHistory ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Allergies", Patient.Allergies ?? (object)DBNull.Value);
 
-                        NewPatientId = (int)await cmd.ExecuteScalarAsync();
+                        NewPatientId = (await cmd.ExecuteScalarAsync() as int?) ?? 0;
                     }
                 }
             }
@@ -255,10 +255,10 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("BirthDate", updatePatientDto.BirthDate);
                         cmd.Parameters.AddWithValue("EmergencyContactName", updatePatientDto.EmergencyContactName);
                         cmd.Parameters.AddWithValue("EmergencyContactPhone", updatePatientDto.EmergencyContactPhone);
-                        cmd.Parameters.AddWithValue("InsuranceProvider", updatePatientDto.InsuranceProvider);
-                        cmd.Parameters.AddWithValue("InsurancePolicyNumber", updatePatientDto.InsurancePolicyNumber);
-                        cmd.Parameters.AddWithValue("MedicalHistory", updatePatientDto.MedicalHistory);
-                        cmd.Parameters.AddWithValue("Allergies", updatePatientDto.Allergies);
+                        cmd.Parameters.AddWithValue("InsuranceProvider", updatePatientDto.InsuranceProvider ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("InsurancePolicyNumber", updatePatientDto.InsurancePolicyNumber ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("MedicalHistory", updatePatientDto.MedicalHistory ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Allergies", updatePatientDto.Allergies ?? (object)DBNull.Value);
 
                         var result = await cmd.ExecuteScalarAsync();
                         isUpdated = (result != null && (bool)result);
@@ -298,7 +298,7 @@ namespace HospitalDataLayer.Infrastructure
 
                         if (result != null && result != DBNull.Value)
                         {
-                            medicalHistory = result.ToString();
+                            medicalHistory = result.ToString() ?? string.Empty;
 
                             if (medicalHistory.StartsWith("Error:"))
                             {
@@ -347,7 +347,7 @@ namespace HospitalDataLayer.Infrastructure
 
                         if (result != null && result != DBNull.Value)
                         {
-                            allergies = result.ToString();
+                            allergies = result.ToString() ?? string.Empty;
 
                             if (allergies.StartsWith("Error:"))
                             {

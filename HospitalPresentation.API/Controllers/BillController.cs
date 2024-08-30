@@ -33,7 +33,7 @@ namespace HospitalPresentation.API.Controllers
 
                 int billId = await _billService.CreateBillAsync(createBillDto);
 
-                if (billId == 0 || billId == null)
+                if (billId == 0)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest);
                 }

@@ -86,7 +86,7 @@ namespace HospitalPresentation.API.Controllers
 
                 int doctorId = await _doctorService.CreateDoctorAsync(createDoctorDto);
 
-                if (doctorId == 0 || doctorId == null)
+                if (doctorId == 0)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest);
                 }

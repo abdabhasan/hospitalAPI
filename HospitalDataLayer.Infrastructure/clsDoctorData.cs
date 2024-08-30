@@ -69,7 +69,7 @@ namespace HospitalDataLayer.Infrastructure
 
         public async Task<DoctorDTO> GetDoctorByIdAsync(int doctorId)
         {
-            DoctorDTO doctor = null;
+            DoctorDTO? doctor = null;
 
             try
             {
@@ -115,7 +115,7 @@ namespace HospitalDataLayer.Infrastructure
                 _logger.LogError(ex, "An error occurred while fetching the Doctor by ID");
             }
 
-            return doctor;
+            return doctor!;
         }
 
 
@@ -152,11 +152,11 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("Email", doctor.Email);
                         cmd.Parameters.AddWithValue("BirthDate", doctor.BirthDate);
                         cmd.Parameters.AddWithValue("Specialization", doctor.Specialization);
-                        cmd.Parameters.AddWithValue("OfficeNumber", doctor.OfficeNumber);
+                        cmd.Parameters.AddWithValue("OfficeNumber", doctor.OfficeNumber ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("YearsOfExperience", doctor.YearsOfExperience);
                         cmd.Parameters.AddWithValue("Qualifications", doctor.Qualifications);
 
-                        newDoctorId = (int)await cmd.ExecuteScalarAsync();
+                        newDoctorId = (await cmd.ExecuteScalarAsync() as int?) ?? 0;
                     }
                 }
             }
@@ -193,7 +193,7 @@ namespace HospitalDataLayer.Infrastructure
 
                         if (result != null && result != DBNull.Value)
                         {
-                            officeNumber = result.ToString();
+                            officeNumber = result.ToString() ?? string.Empty;
 
                             if (officeNumber.StartsWith("Error:"))
                             {
@@ -255,7 +255,7 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("Email", updateDoctorDto.Email);
                         cmd.Parameters.AddWithValue("BirthDate", updateDoctorDto.BirthDate);
                         cmd.Parameters.AddWithValue("Specialization", updateDoctorDto.Specialization);
-                        cmd.Parameters.AddWithValue("OfficeNumber", updateDoctorDto.OfficeNumber);
+                        cmd.Parameters.AddWithValue("OfficeNumber", updateDoctorDto.OfficeNumber ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("YearsOfExperience", updateDoctorDto.YearsOfExperience);
                         cmd.Parameters.AddWithValue("Qualifications", updateDoctorDto.Qualifications);
 

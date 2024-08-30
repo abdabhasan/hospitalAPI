@@ -10,7 +10,7 @@ namespace HospitalDataLayer.Infrastructure.DTOs.Doctor
         public string Email { get; set; } = "";
         public DateTime BirthDate { get; set; }
         public string Specialization { get; set; } = "";
-        public string OfficeNumber { get; set; } = "";
+        public string? OfficeNumber { get; set; } = "";
         public int YearsOfExperience { get; set; }
         public string Qualifications { get; set; } = "";
 
