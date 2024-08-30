@@ -195,7 +195,7 @@ namespace HospitalDataLayer.Infrastructure
                 cmd.Parameters.AddWithValue("notes", NpgsqlTypes.NpgsqlDbType.Text, insuranceClaim.Notes ?? (object)DBNull.Value);
 
 
-                newClaimId = (int)await cmd.ExecuteScalarAsync().ConfigureAwait(false);
+                newClaimId = (await cmd.ExecuteScalarAsync().ConfigureAwait(false) as int?) ?? 0;
             }
             catch (NpgsqlException npgsqlEx)
             {
