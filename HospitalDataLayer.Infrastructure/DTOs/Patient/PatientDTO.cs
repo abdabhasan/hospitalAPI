@@ -12,10 +12,10 @@ namespace HospitalDataLayer.Infrastructure.DTOs
         public DateTime BirthDate { get; set; }
         public string EmergencyContactName { get; set; } = "";
         public string EmergencyContactPhone { get; set; } = "";
-        public string InsuranceProvider { get; set; } = "";
-        public string InsurancePolicyNumber { get; set; } = "";
-        public string MedicalHistory { get; set; } = "";
-        public string Allergies { get; set; } = "";
+        public string? InsuranceProvider { get; set; } = "";
+        public string? InsurancePolicyNumber { get; set; } = "";
+        public string? MedicalHistory { get; set; } = "";
+        public string? Allergies { get; set; } = "";
 
     }
 }
