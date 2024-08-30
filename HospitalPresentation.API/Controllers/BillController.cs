@@ -10,9 +10,11 @@ namespace HospitalPresentation.API.Controllers
     {
 
         private readonly clsBill _billService;
-        public BillController(clsBill billService)
+        private readonly ILogger<BillController> _logger;
+        public BillController(clsBill billService, ILogger<BillController> logger)
         {
             _billService = billService;
+            _logger = logger;
         }
 
 
@@ -41,6 +43,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while CREATING bill");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -73,6 +76,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while DELETING bill");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -82,6 +86,7 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetAllBills", Name = "GetAllBills")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<BillDTO>>> GetAllBillsAsync()
         {
 
@@ -96,6 +101,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING ALL bills");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -106,6 +112,7 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetBillById", Name = "GetBillById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<BillDTO>> GetBillByIdAsync(int BillId)
         {
 
@@ -120,6 +127,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING bill by Id");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -130,6 +138,7 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetBillsForPatientByPatientId", Name = "GetBillsForPatientByPatientId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<BillDTO>>> GetBillsForPatientByPatientIdAsync(int patientId)
         {
 
@@ -144,6 +153,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING bills for PATIENT BY PATIENT ID");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -154,6 +164,7 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetBillsForPatientByPatientName", Name = "GetBillsForPatientByPatientName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<BillDTO>>> GetBillsForPatientByPatientNameAsync(string patientName)
         {
 
@@ -168,12 +179,11 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING bills for PATIENT BY PATIENT NAME");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
         }
-
-
 
 
     }

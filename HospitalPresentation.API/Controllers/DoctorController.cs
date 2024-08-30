@@ -10,16 +10,19 @@ namespace HospitalPresentation.API.Controllers
     {
 
         private readonly clsDoctor _doctorService;
+        private readonly ILogger<DoctorController> _logger;
 
-        public DoctorController(clsDoctor doctorService)
+        public DoctorController(clsDoctor doctorService, ILogger<DoctorController> logger)
         {
             _doctorService = doctorService;
+            _logger = logger;
         }
 
 
         [HttpGet("GetAllDoctors", Name = "GetAllDoctors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetAllDoctorsAsync()
         {
 
@@ -34,6 +37,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while fetching doctors.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -43,6 +47,8 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetDoctorById", Name = "GetDoctorById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<ActionResult<DoctorDTO>> GetDoctorByIdAsync(int doctorId)
         {
 
@@ -57,6 +63,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while fetching doctor.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -88,6 +95,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while creating doctor.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -127,6 +135,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while fetching doctor's office number.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -161,6 +170,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while updating doctor.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -194,6 +204,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while deleting doctor.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }

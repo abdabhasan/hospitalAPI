@@ -10,15 +10,18 @@ namespace HospitalPresentation.API.Controllers
     public class InsuranceClaimController : ControllerBase
     {
         private readonly clsInsuranceClaim _insuranceClaimService;
+        private readonly ILogger<InsuranceClaimController> _logger;
 
-        public InsuranceClaimController(clsInsuranceClaim insuranceClaimService)
+        public InsuranceClaimController(clsInsuranceClaim insuranceClaimService, ILogger<InsuranceClaimController> logger)
         {
             _insuranceClaimService = insuranceClaimService;
+            _logger = logger;
         }
 
         [HttpGet("GetAllInsuranceClaims", Name = "GetAllInsuranceClaims")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<InsuranceClaimDTO>>> GetAllInsuranceClaimsAsync()
         {
 
@@ -33,6 +36,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING ALL Insurance Claims");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -43,6 +47,7 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetInsuranceClaimsForPatientByPatientName", Name = "GetInsuranceClaimsForPatientByPatientName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<InsuranceClaimDTO>>> GetInsuranceClaimsForPatientByPatientNameAsync(string patientName)
         {
 
@@ -57,6 +62,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING Insurance Claims for patient by PatientName");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -68,6 +74,7 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetInsuranceClaimsForPatientByPatientId", Name = "GetInsuranceClaimsForPatientByPatientId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<InsuranceClaimDTO>>> GetInsuranceClaimsForPatientByPatientIdAsync(int patientId)
         {
 
@@ -82,6 +89,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING Insurance Claims for PATIENT BY PatientId");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -113,6 +121,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while CREATING Insurance Claims");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -145,6 +154,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while DELETING Insurance Claims");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }

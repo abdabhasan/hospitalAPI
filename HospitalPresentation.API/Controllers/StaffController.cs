@@ -10,16 +10,20 @@ namespace HospitalPresentation.API.Controllers
     {
 
         private readonly clsStaff _staffService;
+        private readonly ILogger<StaffController> _logger;
 
-        public StaffController(clsStaff staffService)
+        public StaffController(clsStaff staffService, ILogger<StaffController> logger)
         {
             _staffService = staffService;
+            _logger = logger;
         }
 
 
         [HttpGet("GetAllStaff", Name = "GetAllStaff")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<StaffDTO>>> GetAllStaffAsync()
         {
 
@@ -34,6 +38,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING ALL STAFF");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -42,7 +47,9 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetStaffById", Name = "GetStaffById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<StaffDTO>> GetStaffByIdAsync(int staffId)
         {
 
@@ -57,6 +64,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTNG STAFF BY ID");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -88,6 +96,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while CREATING STAFF");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -121,6 +130,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while UPDATING STAFF");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -129,6 +139,7 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpDelete("DeleteStaffById/{staffId}", Name = "DeleteStaffById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteStaffByIdAsync(int staffId)
@@ -153,6 +164,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while DELETING STAFF");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }

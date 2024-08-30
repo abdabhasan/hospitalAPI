@@ -1,6 +1,7 @@
 using HospitalDataLayer.Infrastructure.DTOs;
 using HospitalDataLayer.Infrastructure.DTOs.InsuranceClaim;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace HospitalDataLayer.Infrastructure
@@ -9,10 +10,13 @@ namespace HospitalDataLayer.Infrastructure
     {
 
         private readonly string _connectionString;
+        private readonly ILogger<clsInsuranceClaimData> _logger;
 
-        public clsInsuranceClaimData(string connectionString)
+
+        public clsInsuranceClaimData(string connectionString, ILogger<clsInsuranceClaimData> logger)
         {
             _connectionString = connectionString;
+            _logger = logger;
         }
 
 
@@ -53,11 +57,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving insurance claims: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving insurance claims ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving insurance claims: {ex.Message}");
+                _logger.LogError(ex, " Anerror occurred while retrieving insurance claims ");
             }
 
             return insuranceClaims;
@@ -102,11 +106,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving insurance claims: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving insurance claims ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving insurance claims: {ex.Message}");
+                _logger.LogError(ex, " Anerror occurred while retrieving insurance claims ");
             }
 
             return insuranceClaims;
@@ -151,11 +155,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving insurance claims: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving insurance claims ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving insurance claims: {ex.Message}");
+                _logger.LogError(ex, " Anerror occurred while retrieving insurance claims ");
             }
 
             return insuranceClaims;
@@ -195,11 +199,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while creating insurance claim: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while creating insurance claim ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while creating insurance claim: {ex.Message}");
+                _logger.LogError(ex, " Anerror occurred while creating insurance claim ");
             }
 
             return newClaimId;
@@ -230,12 +234,12 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while deleting insurance claim: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while deleting insurance claim ");
                 // Log or rethrow the exception as needed
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while deleting insurance claim: {ex.Message}");
+                _logger.LogError(ex, " Anerror occurred while deleting insurance claim ");
                 // Log or rethrow the exception as needed
             }
 

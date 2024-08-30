@@ -12,16 +12,19 @@ namespace HospitalPresentation.API.Controllers
 
 
         private readonly clsPatient _patientService;
+        private readonly ILogger<PatientController> _logger;
 
-        public PatientController(clsPatient patientService)
+        public PatientController(clsPatient patientService, ILogger<PatientController> logger)
         {
             _patientService = patientService;
+            _logger = logger;
         }
 
 
         [HttpGet("GetAllPatients", Name = "GetAllPatients")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetAllPatientsAsync()
         {
 
@@ -36,6 +39,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING ALL PATIENTS");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -44,7 +48,8 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetPatientById", Name = "GetPatientById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PatientDTO>> GetPatientByIdAsync(int PatientId)
         {
 
@@ -59,6 +64,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING PATIENT BY ID");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
 
@@ -84,6 +90,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while CREATING PATIENT");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -91,7 +98,7 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpDelete("DeletePatient/{patientId}", Name = "DeletePatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeletePatientAsync(int patientId)
         {
@@ -115,6 +122,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while DELETING PATIENT");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -123,7 +131,7 @@ namespace HospitalPresentation.API.Controllers
         [HttpPut("UpdatePatient/{patientId}", Name = "UpdatePatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> UpdatePatientAsync(int patientId, [FromBody] UpdatePatientDTO updatePatientDto)
         {
@@ -147,6 +155,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while UPDATING PATIENT");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -154,7 +163,6 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetPatientMedicalHistory/{patientId}", Name = "GetPatientMedicalHistory")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> GetPatientMedicalHistoryAsync(int patientId)
@@ -185,6 +193,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING PATIENT'S MEDICAL HISTORY");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
@@ -192,7 +201,6 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetPatientAllergies/{patientId}", Name = "GetPatientAllergies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> GetPatientAllergiesAsync(int patientId)
@@ -223,6 +231,7 @@ namespace HospitalPresentation.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occurred while GETTING PATIENT'S ALLERGIES");
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }

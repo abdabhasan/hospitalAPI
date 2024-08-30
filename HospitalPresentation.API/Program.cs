@@ -1,9 +1,21 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration) // Read from appsettings.json
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog(); // Use Serilog instead of default logging
 
 
 // Register the connection string in the DI container
@@ -46,6 +58,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Add Serilog request logging
+app.UseSerilogRequestLogging();
+
 
 app.UseHttpsRedirection();
 

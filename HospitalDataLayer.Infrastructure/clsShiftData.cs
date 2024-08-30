@@ -1,5 +1,6 @@
 using HospitalDataLayer.Infrastructure.DTOs.Shift;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace HospitalDataLayer.Infrastructure
@@ -8,10 +9,12 @@ namespace HospitalDataLayer.Infrastructure
     public class clsShiftData : IShiftData
     {
         private readonly string _connectionString;
+        private readonly ILogger<clsShiftData> _logger;
 
-        public clsShiftData(string connectionString)
+        public clsShiftData(string connectionString, ILogger<clsShiftData> logger)
         {
             _connectionString = connectionString;
+            _logger = logger;
         }
 
 
@@ -60,11 +63,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving shifts: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving shifts ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving shifts: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving shifts ");
             }
 
             return shifts;
@@ -118,11 +121,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while retrieving the staff's shift: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while retrieving the staff's shift ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while retrieving the staff's shift: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while retrieving the staff's shift ");
             }
 
             return shifts;
@@ -170,11 +173,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while creating shift: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while creating shift ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while creating shift: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while creating shift ");
             }
 
             return isSuccess;
@@ -225,11 +228,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while updating shift: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while updating shift ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while updating shift: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while updating shift ");
             }
 
             return isSuccess;
@@ -267,11 +270,11 @@ namespace HospitalDataLayer.Infrastructure
             }
             catch (NpgsqlException npgsqlEx)
             {
-                Console.WriteLine($"Database error occurred while deleting shift: {npgsqlEx.Message}");
+                _logger.LogError(npgsqlEx, "Database error occurred while deleting shift ");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while deleting shift: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while deleting shift ");
             }
 
             return isSuccess;
