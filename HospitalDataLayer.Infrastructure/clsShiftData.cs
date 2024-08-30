@@ -155,8 +155,8 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("@Date", shift.Date.Date);
                         cmd.Parameters.AddWithValue("@StartTime", shift.StartTime);
                         cmd.Parameters.AddWithValue("@EndTime", shift.EndTime);
-                        cmd.Parameters.AddWithValue("@Role", shift.Role);
-                        cmd.Parameters.AddWithValue("@Notes", (object)shift.Notes ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Role", shift.Role ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Notes", shift.Notes ?? (object)DBNull.Value);
 
                         var result = await cmd.ExecuteScalarAsync();
 
@@ -210,8 +210,8 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("@Date", shift.Date.Date);
                         cmd.Parameters.AddWithValue("@StartTime", shift.StartTime);
                         cmd.Parameters.AddWithValue("@EndTime", shift.EndTime);
-                        cmd.Parameters.AddWithValue("@Role", shift.Role);
-                        cmd.Parameters.AddWithValue("@Notes", (object)shift.Notes ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Role", shift.Role ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Notes", shift.Notes ?? (object)DBNull.Value);
 
                         var result = await cmd.ExecuteScalarAsync();
 
