@@ -67,7 +67,7 @@ namespace HospitalDataLayer.Infrastructure
 
         public async Task<StaffDTO> GetStaffByIdAsync(int staffId)
         {
-            StaffDTO staff = null;
+            StaffDTO? staff = null;
 
             try
             {
@@ -111,7 +111,7 @@ namespace HospitalDataLayer.Infrastructure
                 _logger.LogError(ex, "An error occurred while fetching the Staff by ID ");
             }
 
-            return staff;
+            return staff!;
         }
 
 
@@ -148,7 +148,7 @@ namespace HospitalDataLayer.Infrastructure
                         cmd.Parameters.AddWithValue("Role", staff.Role);
                         cmd.Parameters.AddWithValue("Qualifications", staff.Qualifications);
 
-                        newStaffId = (int)await cmd.ExecuteScalarAsync();
+                        newStaffId = (await cmd.ExecuteScalarAsync() as int?) ?? 0; ;
                     }
                 }
             }
