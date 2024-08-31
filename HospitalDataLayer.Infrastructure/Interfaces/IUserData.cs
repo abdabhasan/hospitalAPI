@@ -6,6 +6,7 @@ namespace HospitalDataLayer.Infrastructure.Interfaces
     {
         Task<IEnumerable<UserDTO>> GetAllUsersAsync();
         Task<UserDTO> GetUserByIdAsync(int userId);
+        Task<UserDTO> GetUserByUsernameAsync(string username);
         Task<int> CreateUserAsync(CreateUserDTO user);
         Task<bool> UpdateUserAsync(int userId, UpdateUserDTO updateUserDto);
         Task<bool> DeleteUserAsync(int userId);
