@@ -1,7 +1,10 @@
+using System.Text;
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure;
 using HospitalDataLayer.Infrastructure.Helpers;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 
@@ -20,7 +23,30 @@ builder.Host.UseSerilog(); // Use Serilog instead of default logging
 
 
 // Register the connection string in the DI container
-builder.Services.AddSingleton(sp => builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddSingleton(sp => builder.Configuration.GetConnectionString("DefaultConnection")!);
+
+
+
+// Add JWT authentication
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]!);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidateLifetime = true
+    };
+});
 
 
 
@@ -55,6 +81,11 @@ builder.Services.AddScoped<PasswordHelper>();
 
 
 var app = builder.Build();
+
+// Use authentication middleware
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
