@@ -1,5 +1,6 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure;
+using HospitalDataLayer.Infrastructure.Helpers;
 using HospitalDataLayer.Infrastructure.Interfaces;
 using Serilog;
 
@@ -45,6 +46,9 @@ builder.Services.AddScoped<IInsuranceClaimData, clsInsuranceClaimData>();
 builder.Services.AddScoped<clsInsuranceClaim>();
 builder.Services.AddScoped<IBillData, clsBillData>();
 builder.Services.AddScoped<clsBill>();
+builder.Services.AddScoped<IUserData, clsUserData>();
+builder.Services.AddScoped<clsUser>();
+builder.Services.AddScoped<PasswordHelper>();
 
 
 
