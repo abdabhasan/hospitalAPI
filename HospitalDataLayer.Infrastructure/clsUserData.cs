@@ -188,6 +188,52 @@ namespace HospitalDataLayer.Infrastructure
             return user!;
         }
 
+        public async Task<UserDTO> GetUserByUsernameAsync(string username)
+        {
+            UserDTO? user = null;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+                    string query = "SELECT user_id, username, " +
+                                   "role, created_at, updated_at " +
+                                   "FROM get_user_by_username(@Username)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("Username", username);
+
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                user = new UserDTO
+                                {
+                                    Id = reader.GetInt32(0),
+                                    Username = reader.GetString(1),
+                                    Role = reader.GetString(2),
+                                    CreatedAt = reader.GetDateTime(3),
+                                    UpdatedAt = reader.GetDateTime(4),
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                _logger.LogError(npgsqlEx, "Database error occurred while fetching the User by Username");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the User by Username");
+            }
+
+            return user!;
+        }
+
         public Task<bool> UpdatePasswordByUsernameAsync(string username, string newPassword)
         {
             throw new NotImplementedException();

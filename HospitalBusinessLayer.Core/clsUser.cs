@@ -34,6 +34,11 @@ namespace HospitalBusinessLayer.Core
             return await _userData.GetUserByIdAsync(userId);
         }
 
+        public async Task<UserDTO> GetUserByUsernameAsync(string username)
+        {
+            return await _userData.GetUserByUsernameAsync(username);
+        }
+
         public async Task<bool> UpdateUserAsync(int userId, UpdateUserDTO updateUserDto)
         {
             return await _userData.UpdateUserAsync(userId, updateUserDto);
