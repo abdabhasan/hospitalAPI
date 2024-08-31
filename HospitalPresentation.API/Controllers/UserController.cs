@@ -136,6 +136,33 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [HttpGet("GetUserByUsername", Name = "GetUserByUsername")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<ActionResult<UserDTO>> GetUserByUsernameAsync(string username)
+        {
+
+            try
+            {
+                UserDTO user = await _userService.GetUserByUsernameAsync(username);
+                if (user == null)
+                {
+                    return NotFound($"User with username {username} NOT FOUND!");
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching user.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+
+        }
+
+
+
         [HttpPut("UpdateUser/{userId}", Name = "UpdateUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
