@@ -3,10 +3,11 @@ using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure;
 using HospitalDataLayer.Infrastructure.Helpers;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using HospitalPresentation.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,6 @@ builder.Host.UseSerilog(); // Use Serilog instead of default logging
 
 // Register the connection string in the DI container
 builder.Services.AddSingleton(sp => builder.Configuration.GetConnectionString("DefaultConnection")!);
-
 
 
 // Add JWT authentication
@@ -46,6 +46,20 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
         ValidateLifetime = true
     };
+});
+
+// Add role-based authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin"));
+    options.AddPolicy("DoctorPolicy", policy => policy.RequireRole("doctor", "admin"));
+    options.AddPolicy("RegistrationPolicy", policy => policy.RequireRole("registration", "admin"));
+    options.AddPolicy("ReceptionPolicy", policy => policy.RequireRole("reception", "admin"));
+    options.AddPolicy("NursePolicy", policy => policy.RequireRole("nurse", "admin"));
+    options.AddPolicy("LabPolicy", policy => policy.RequireRole("lab", "admin"));
+    options.AddPolicy("PharmacistPolicy", policy => policy.RequireRole("pharmacist", "admin"));
+    options.AddPolicy("BillingPolicy", policy => policy.RequireRole("billing", "admin"));
+    options.AddPolicy("ITPolicy", policy => policy.RequireRole("IT", "admin"));
 });
 
 
@@ -75,8 +89,7 @@ builder.Services.AddScoped<clsBill>();
 builder.Services.AddScoped<IUserData, clsUserData>();
 builder.Services.AddScoped<clsUser>();
 builder.Services.AddScoped<PasswordHelper>();
-
-
+builder.Services.AddScoped<TokenHelper>();
 
 
 
