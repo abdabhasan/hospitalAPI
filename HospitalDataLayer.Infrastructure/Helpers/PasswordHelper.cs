@@ -1,20 +1,18 @@
-using HospitalDataLayer.Infrastructure.DTOs.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace HospitalDataLayer.Infrastructure.Helpers
 {
     public class PasswordHelper
     {
-        private readonly PasswordHasher<CreateUserDTO> _passwordHasher = new PasswordHasher<CreateUserDTO>();
-
-        public string HashPassword(CreateUserDTO user, string password)
+        private readonly PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
+        public string HashPassword(string password)
         {
-            return _passwordHasher.HashPassword(user, password);
+            return _passwordHasher.HashPassword(null, password);
         }
 
-        public PasswordVerificationResult VerifyPassword(CreateUserDTO user, string password, string hashedPassword)
+        public PasswordVerificationResult VerifyPassword(string password, string hashedPassword)
         {
-            return _passwordHasher.VerifyHashedPassword(user, hashedPassword, password);
+            return _passwordHasher.VerifyHashedPassword(null, hashedPassword, password);
         }
     }
 }
