@@ -13,6 +13,7 @@ namespace HospitalDataLayer.Infrastructure.Interfaces
         Task<bool> UpdatePasswordByUsernameAsync(string username, string newPassword);
         Task<bool> UpdateUsernameAsync(string username, string newUsername);
         Task<bool> UpdateRoleByUsernameAsync(string username, int newRoleId);
+        Task<bool> IsValidCredentialsAsync(string username, string password);
 
     }
 }

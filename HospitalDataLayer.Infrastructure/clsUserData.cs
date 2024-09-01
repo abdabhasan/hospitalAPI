@@ -2,6 +2,7 @@
 using HospitalDataLayer.Infrastructure.DTOs.User;
 using HospitalDataLayer.Infrastructure.Helpers;
 using HospitalDataLayer.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 
@@ -35,7 +36,7 @@ namespace HospitalDataLayer.Infrastructure
                                    "@PasswordHash::VARCHAR, " +
                                    "@RoleId::INT )";
 
-                    string hashedPassword = _passwordHelper.HashPassword(user, user.PasswordHash);
+                    string hashedPassword = _passwordHelper.HashPassword(user.PasswordHash);
 
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {
@@ -232,6 +233,107 @@ namespace HospitalDataLayer.Infrastructure
             }
 
             return user!;
+        }
+
+
+        private async Task<string> GetPasswordHashByUsernameAsync(string username)
+        {
+            string passwordHash = null;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+                    string query = "SELECT get_password_hash_by_username(@Username)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("Username", username);
+
+                        passwordHash = (string)await cmd.ExecuteScalarAsync();
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                _logger.LogError(npgsqlEx, "Database error occurred while fetching the User by Username");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the User by Username");
+            }
+
+            return passwordHash;
+        }
+
+
+        private async Task<bool> IsUserExistsByUsernameAsync(string username)
+        {
+
+            bool userExists = false;
+
+            try
+            {
+                using (var conn = new NpgsqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+                    string query = "SELECT is_user_exists_by_username(@Username)";
+
+                    using (var cmd = new NpgsqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("Username", username);
+
+                        userExists = (await cmd.ExecuteScalarAsync() as bool?) ?? false;
+                    }
+                }
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                _logger.LogError(npgsqlEx, "Database error occurred while checking if the User exists by Username");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking if the User exists by Username");
+            }
+
+            return userExists;
+        }
+
+
+        public async Task<bool> IsValidCredentialsAsync(string username, string password)
+        {
+            bool isValid = false;
+
+            try
+            {
+
+                bool userExists = await IsUserExistsByUsernameAsync(username);
+
+                if (userExists)
+                {
+                    string passwordHash = await GetPasswordHashByUsernameAsync(username);
+
+                    if (!string.IsNullOrEmpty(passwordHash))
+                    {
+
+                        var verificationResult = _passwordHelper.VerifyPassword(password, passwordHash);
+
+                        isValid = verificationResult == PasswordVerificationResult.Success;
+                    }
+                }
+
+            }
+            catch (NpgsqlException npgsqlEx)
+            {
+                _logger.LogError(npgsqlEx, "Database error occurred while checking credentials");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking credentials");
+            }
+
+            return isValid;
         }
 
         public Task<bool> UpdatePasswordByUsernameAsync(string username, string newPassword)
