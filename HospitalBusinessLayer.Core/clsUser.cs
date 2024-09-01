@@ -44,6 +44,10 @@ namespace HospitalBusinessLayer.Core
             return await _userData.UpdateUserAsync(userId, updateUserDto);
         }
 
+        public async Task<bool> IsValidCredentialsAsync(string username, string password)
+        {
+            return await _userData.IsValidCredentialsAsync(username, password);
+        }
 
     }
 }
