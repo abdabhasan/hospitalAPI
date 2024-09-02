@@ -2,6 +2,7 @@ using HospitalDataLayer.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
 using HospitalBusinessLayer.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalPresentation.API.Controllers
 {
@@ -21,9 +22,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+        [Authorize(Policy = "RegistrationAndReceptionPolicy")]
         [HttpGet("GetAllPatients", Name = "GetAllPatients")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetAllPatientsAsync()
         {
@@ -46,9 +51,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+        [Authorize(Policy = "RegistrationAndReceptionPolicy")]
         [HttpGet("GetPatientById", Name = "GetPatientById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PatientDTO>> GetPatientByIdAsync(int PatientId)
         {
@@ -71,9 +80,12 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+        [Authorize(Policy = "RegistrationPolicy")]
         [HttpPost("CreatePatient", Name = "CreatePatient")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> CreatePatientAsync([FromBody] CreatePatientDTO createPatientDto)
         {
@@ -96,9 +108,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+        [Authorize(Policy = "RegistrationPolicy")]
         [HttpDelete("DeletePatient/{patientId}", Name = "DeletePatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeletePatientAsync(int patientId)
         {
@@ -128,10 +144,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+        [Authorize(Policy = "RegistrationPolicy")]
         [HttpPut("UpdatePatient/{patientId}", Name = "UpdatePatient")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> UpdatePatientAsync(int patientId, [FromBody] UpdatePatientDTO updatePatientDto)
         {
@@ -161,9 +180,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+        [Authorize(Policy = "DrRegNuLaPhPolicy")]
         [HttpGet("GetPatientMedicalHistory/{patientId}", Name = "GetPatientMedicalHistory")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> GetPatientMedicalHistoryAsync(int patientId)
         {
@@ -199,9 +222,14 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+
+        [Authorize(Policy = "DrRegNuLaPhPolicy")]
         [HttpGet("GetPatientAllergies/{patientId}", Name = "GetPatientAllergies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> GetPatientAllergiesAsync(int patientId)
         {

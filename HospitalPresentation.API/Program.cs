@@ -60,6 +60,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("PharmacistPolicy", policy => policy.RequireRole("pharmacist", "admin"));
     options.AddPolicy("BillingPolicy", policy => policy.RequireRole("billing", "admin"));
     options.AddPolicy("ITPolicy", policy => policy.RequireRole("IT", "admin"));
+    options.AddPolicy("DrRegNuLaPhPolicy", policy => policy.RequireRole("admin", "doctor", "registration", "nurse", "lab", "pharmacist"));
+    options.AddPolicy("RegistrationAndReceptionPolicy", policy => policy.RequireRole("registration", "reception", "admin"));
 });
 
 
