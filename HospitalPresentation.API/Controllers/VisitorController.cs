@@ -1,11 +1,13 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Visitor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalPresentation.API.Controllers
 {
     [ApiController]
     [Route("api/visitors")]
+    [Authorize(Policy = "ReceptionPolicy")]
     public class VisitorController : ControllerBase
     {
 
@@ -23,6 +25,8 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetAllVisitors", Name = "GetAllVisitors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<VisitorDTO>>> GetAllVisitorsAsync()
@@ -50,6 +54,8 @@ namespace HospitalPresentation.API.Controllers
         [HttpGet("GetVisitorByName", Name = "GetVisitorByName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<VisitorDTO>>> GetVisitorByNameAsync(string visitorName)
@@ -77,6 +83,8 @@ namespace HospitalPresentation.API.Controllers
         [HttpDelete("DeleteVisitor/{visitorId}", Name = "DeleteVisitor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteVisitorByIdAsync(int visitorId)
