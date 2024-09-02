@@ -1,12 +1,14 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs;
 using HospitalDataLayer.Infrastructure.DTOs.InsuranceClaim;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalPresentation.API.Controllers
 {
     [ApiController]
     [Route("api/insurance-claims")]
+    [Authorize(Policy = "BillingPolicy")]
     public class InsuranceClaimController : ControllerBase
     {
         private readonly clsInsuranceClaim _insuranceClaimService;
@@ -20,6 +22,9 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetAllInsuranceClaims", Name = "GetAllInsuranceClaims")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<InsuranceClaimDTO>>> GetAllInsuranceClaimsAsync()
@@ -46,6 +51,9 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetInsuranceClaimsForPatientByPatientName", Name = "GetInsuranceClaimsForPatientByPatientName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<InsuranceClaimDTO>>> GetInsuranceClaimsForPatientByPatientNameAsync(string patientName)
@@ -73,6 +81,9 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpGet("GetInsuranceClaimsForPatientByPatientId", Name = "GetInsuranceClaimsForPatientByPatientId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<InsuranceClaimDTO>>> GetInsuranceClaimsForPatientByPatientIdAsync(int patientId)
@@ -100,6 +111,8 @@ namespace HospitalPresentation.API.Controllers
         [HttpPost("CreateInsuranceClaim", Name = "CreateInsuranceClaim")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> CreateInsuranceClaimAsync([FromBody] CreateInsuranceClaimDTO createInsuranceClaimDto)
         {
@@ -130,6 +143,9 @@ namespace HospitalPresentation.API.Controllers
 
         [HttpDelete("DeleteInsuranceClaim/{insuranceClaimId}", Name = "DeleteInsuranceClaim")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteInsuranceClaimAsync(int insuranceClaimId)

@@ -1,5 +1,6 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Doctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalPresentation.API.Controllers
@@ -18,10 +19,12 @@ namespace HospitalPresentation.API.Controllers
             _logger = logger;
         }
 
-
+        [Authorize(Policy = "RegistrationPolicy")]
         [HttpGet("GetAllDoctors", Name = "GetAllDoctors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<DoctorDTO>>> GetAllDoctorsAsync()
         {
@@ -44,9 +47,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+
+        [Authorize(Policy = "RegistrationPolicy")]
         [HttpGet("GetDoctorById", Name = "GetDoctorById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
         public async Task<ActionResult<DoctorDTO>> GetDoctorByIdAsync(int doctorId)
@@ -70,10 +77,12 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
-
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("CreateDoctor", Name = "CreateDoctor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> CreateDoctorAsync([FromBody] CreateDoctorDTO createDoctorDto)
         {
@@ -101,11 +110,12 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
-
+        [Authorize(Policy = "ReceptionPolicy")]
         [HttpGet("GetDoctorOfficeNumber/{doctorId}", Name = "GetDoctorOfficeNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<string>> GetDoctorOfficeNumberAsync(int doctorId)
         {
@@ -142,11 +152,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
-
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("UpdateDoctor/{doctorId}", Name = "UpdateDoctor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> UpdateDoctorAsync(int doctorId, [FromBody] UpdateDoctorDTO UpdateDoctorDto)
         {
@@ -177,10 +188,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
-
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("DeleteDoctor/{doctorId}", Name = "DeleteDoctor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteDoctorAsync(int doctorId)
         {

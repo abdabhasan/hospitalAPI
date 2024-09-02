@@ -1,5 +1,6 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Shift;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalPresentation.API.Controllers
@@ -21,9 +22,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [Authorize(Policy = "NursingManagerPolicy")]
         [HttpGet("GetAllShifts", Name = "GetAllShifts")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<ShiftDTO>>> GetAllShiftsAsync()
@@ -48,9 +52,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
-        [HttpGet(" GetStaffShiftsByStaffId", Name = " GetStaffShiftsByStaffId")]
+        [Authorize(Policy = "NursingManagerPolicy")]
+        [HttpGet("GetStaffShiftsByStaffId", Name = "GetStaffShiftsByStaffId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<ShiftDTO>>> GetStaffShiftsByStaffIdAsync(int staffId)
@@ -81,9 +88,13 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [Authorize(Policy = "NursingManagerPolicy")]
         [HttpPost("CreateShift", Name = "CreateShift")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> CreateShiftAsync([FromBody] CreateShiftDTO createShiftDto)
         {
@@ -113,9 +124,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [Authorize(Policy = "NursingManagerPolicy")]
         [HttpPut("UpdateShift", Name = "UpdateShift")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> UpdateShiftByIdAsync(int shiftId, [FromBody] UpdateShiftDTO updateShiftDto)
@@ -146,9 +160,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [Authorize(Policy = "NursingManagerPolicy")]
         [HttpDelete("DeleteShift/{doctorId}", Name = "DeleteShift")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteShiftByIdAsync(int doctorId)
