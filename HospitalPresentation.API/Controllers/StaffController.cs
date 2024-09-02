@@ -1,5 +1,6 @@
 using HospitalBusinessLayer.Core;
 using HospitalDataLayer.Infrastructure.DTOs.Staff;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalPresentation.API.Controllers
@@ -19,9 +20,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+
+        [Authorize(Policy = "StaffManagerPolicy")]
         [HttpGet("GetAllStaff", Name = "GetAllStaff")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<StaffDTO>>> GetAllStaffAsync()
@@ -45,9 +50,13 @@ namespace HospitalPresentation.API.Controllers
         }
 
 
+
+        [Authorize(Policy = "StaffManagerPolicy")]
         [HttpGet("GetStaffById", Name = "GetStaffById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<StaffDTO>> GetStaffByIdAsync(int staffId)
@@ -72,9 +81,13 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [Authorize(Policy = "StaffManagerPolicy")]
         [HttpPost("CreateStaff", Name = "CreateStaff")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> CreateStaffAsync([FromBody] CreateStaffDTO createStaffDto)
         {
@@ -103,9 +116,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [Authorize(Policy = "StaffManagerPolicy")]
         [HttpPut("UpdateStaffById/{staffId}", Name = "UpdateStaffById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> UpdateStaffByIdAsync(int staffId, [FromBody] UpdateStaffDTO UpdateStaffDto)
@@ -137,9 +153,12 @@ namespace HospitalPresentation.API.Controllers
 
 
 
+        [Authorize(Policy = "StaffManagerPolicy")]
         [HttpDelete("DeleteStaffById/{staffId}", Name = "DeleteStaffById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<bool>> DeleteStaffByIdAsync(int staffId)

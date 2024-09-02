@@ -56,6 +56,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RegistrationPolicy", policy => policy.RequireRole("registration", "admin"));
     options.AddPolicy("ReceptionPolicy", policy => policy.RequireRole("reception", "admin"));
     options.AddPolicy("NursingManagerPolicy", policy => policy.RequireRole("nursing-manager", "admin"));
+    options.AddPolicy("StaffManagerPolicy", policy => policy.RequireRole("staff-manager", "admin"));
     options.AddPolicy("NursePolicy", policy => policy.RequireRole("nurse", "admin"));
     options.AddPolicy("LabPolicy", policy => policy.RequireRole("lab", "admin"));
     options.AddPolicy("PharmacistPolicy", policy => policy.RequireRole("pharmacist", "admin"));
