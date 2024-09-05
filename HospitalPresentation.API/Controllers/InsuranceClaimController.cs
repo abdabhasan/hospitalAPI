@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs;
 using HospitalDataLayer.Infrastructure.DTOs.InsuranceClaim;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +11,10 @@ namespace HospitalPresentation.API.Controllers
     [Authorize(Policy = "BillingPolicy")]
     public class InsuranceClaimController : ControllerBase
     {
-        private readonly clsInsuranceClaim _insuranceClaimService;
+        private readonly IInsuranceClaim _insuranceClaimService;
         private readonly ILogger<InsuranceClaimController> _logger;
 
-        public InsuranceClaimController(clsInsuranceClaim insuranceClaimService, ILogger<InsuranceClaimController> logger)
+        public InsuranceClaimController(IInsuranceClaim insuranceClaimService, ILogger<InsuranceClaimController> logger)
         {
             _insuranceClaimService = insuranceClaimService;
             _logger = logger;
