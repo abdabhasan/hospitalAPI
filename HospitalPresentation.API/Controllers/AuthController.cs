@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Auth.Login;
 using HospitalDataLayer.Infrastructure.DTOs.User;
 using HospitalPresentation.API.Helpers;
@@ -10,11 +10,11 @@ namespace HospitalPresentation.API.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly clsUser _userService;
+        private readonly IUser _userService;
         private readonly TokenHelper _tokenHelper;
 
 
-        public AuthController(clsUser userService, TokenHelper tokenHelper)
+        public AuthController(IUser userService, TokenHelper tokenHelper)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
