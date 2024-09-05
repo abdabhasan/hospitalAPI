@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Doctor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +10,10 @@ namespace HospitalPresentation.API.Controllers
     public class DoctorController : ControllerBase
     {
 
-        private readonly clsDoctor _doctorService;
+        private readonly IDoctor _doctorService;
         private readonly ILogger<DoctorController> _logger;
 
-        public DoctorController(clsDoctor doctorService, ILogger<DoctorController> logger)
+        public DoctorController(IDoctor doctorService, ILogger<DoctorController> logger)
         {
             _doctorService = doctorService;
             _logger = logger;

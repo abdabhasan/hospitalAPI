@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Bill;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +11,9 @@ namespace HospitalPresentation.API.Controllers
     public class BillController : ControllerBase
     {
 
-        private readonly clsBill _billService;
+        private readonly IBill _billService;
         private readonly ILogger<BillController> _logger;
-        public BillController(clsBill billService, ILogger<BillController> logger)
+        public BillController(IBill billService, ILogger<BillController> logger)
         {
             _billService = billService;
             _logger = logger;

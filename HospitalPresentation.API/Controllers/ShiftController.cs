@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Shift;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +11,10 @@ namespace HospitalPresentation.API.Controllers
     {
 
 
-        private readonly clsShift _shiftService;
+        private readonly IShift _shiftService;
         private readonly ILogger<ShiftController> _logger;
 
-        public ShiftController(clsShift shiftService, ILogger<ShiftController> logger)
+        public ShiftController(IShift shiftService, ILogger<ShiftController> logger)
         {
             _shiftService = shiftService;
             _logger = logger;
