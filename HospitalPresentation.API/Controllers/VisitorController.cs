@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Visitor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +11,11 @@ namespace HospitalPresentation.API.Controllers
     public class VisitorController : ControllerBase
     {
 
-        private readonly clsVisitor _visitorService;
+        private readonly IVisitor _visitorService;
         private readonly ILogger<VisitorController> _logger;
 
 
-        public VisitorController(clsVisitor visitorService, ILogger<VisitorController> logger)
+        public VisitorController(IVisitor visitorService, ILogger<VisitorController> logger)
         {
             _visitorService = visitorService;
             _logger = logger;
