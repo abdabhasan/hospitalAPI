@@ -1,10 +1,11 @@
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
 using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
-    public class clsPatient
+    public class clsPatient : IPatient
     {
 
         private readonly IPatientData _patientData;
