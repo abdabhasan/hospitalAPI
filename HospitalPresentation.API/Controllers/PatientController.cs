@@ -1,8 +1,8 @@
 using HospitalDataLayer.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using HospitalDataLayer.Infrastructure.DTOs.Patient;
-using HospitalBusinessLayer.Core;
 using Microsoft.AspNetCore.Authorization;
+using HospitalBusinessLayer.Core.Interfaces;
 
 namespace HospitalPresentation.API.Controllers
 {
@@ -12,10 +12,10 @@ namespace HospitalPresentation.API.Controllers
     {
 
 
-        private readonly clsPatient _patientService;
+        private readonly IPatient _patientService;
         private readonly ILogger<PatientController> _logger;
 
-        public PatientController(clsPatient patientService, ILogger<PatientController> logger)
+        public PatientController(IPatient patientService, ILogger<PatientController> logger)
         {
             _patientService = patientService;
             _logger = logger;
