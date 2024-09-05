@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Staff;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +10,10 @@ namespace HospitalPresentation.API.Controllers
     public class StaffController : ControllerBase
     {
 
-        private readonly clsStaff _staffService;
+        private readonly IStaff _staffService;
         private readonly ILogger<StaffController> _logger;
 
-        public StaffController(clsStaff staffService, ILogger<StaffController> logger)
+        public StaffController(IStaff staffService, ILogger<StaffController> logger)
         {
             _staffService = staffService;
             _logger = logger;
