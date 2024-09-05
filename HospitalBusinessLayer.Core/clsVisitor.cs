@@ -1,9 +1,10 @@
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Visitor;
 using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
-    public class clsVisitor
+    public class clsVisitor : IVisitor
     {
 
         public clsVisitor(IVisitorData visitorData)
