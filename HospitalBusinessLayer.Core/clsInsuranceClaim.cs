@@ -1,11 +1,12 @@
 
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs;
 using HospitalDataLayer.Infrastructure.DTOs.InsuranceClaim;
 using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
-    public class clsInsuranceClaim
+    public class clsInsuranceClaim : IInsuranceClaim
     {
         private readonly IInsuranceClaimData _insuranceClaim;
         public clsInsuranceClaim(IInsuranceClaimData insuranceClaim)
