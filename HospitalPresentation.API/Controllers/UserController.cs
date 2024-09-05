@@ -1,4 +1,4 @@
-using HospitalBusinessLayer.Core;
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +10,10 @@ namespace HospitalPresentation.API.Controllers
     [Authorize(Policy = "AdminPolicy")]
     public class UserController : ControllerBase
     {
-        private readonly clsUser _userService;
+        private readonly IUser _userService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(clsUser userService, ILogger<UserController> logger)
+        public UserController(IUser userService, ILogger<UserController> logger)
         {
             _userService = userService;
             _logger = logger;
