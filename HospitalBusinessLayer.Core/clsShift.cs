@@ -1,10 +1,11 @@
 
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Shift;
 using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
-    public class clsShift
+    public class clsShift : IShift
     {
 
         private readonly IShiftData _shiftData;

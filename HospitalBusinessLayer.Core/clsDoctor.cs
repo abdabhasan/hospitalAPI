@@ -1,9 +1,10 @@
-﻿using HospitalDataLayer.Infrastructure.DTOs.Doctor;
+﻿using HospitalBusinessLayer.Core.Interfaces;
+using HospitalDataLayer.Infrastructure.DTOs.Doctor;
 using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core;
 
-public class clsDoctor
+public class clsDoctor : IDoctor
 {
     private readonly IDoctorData _doctorData;
 

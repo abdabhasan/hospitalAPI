@@ -1,9 +1,10 @@
+using HospitalBusinessLayer.Core.Interfaces;
 using HospitalDataLayer.Infrastructure.DTOs.Bill;
 using HospitalDataLayer.Infrastructure.Interfaces;
 
 namespace HospitalBusinessLayer.Core
 {
-    public class clsBill
+    public class clsBill : IBill
     {
         private readonly IBillData _billData;
         public clsBill(IBillData billData)
