@@ -61,6 +61,11 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
+                if (string.IsNullOrWhiteSpace(patientName))
+                {
+                    return BadRequest("Invalid patient name.");
+                }
+
                 IEnumerable<InsuranceClaimDTO> InsuranceClaimsList = await _insuranceClaimService.GetInsuranceClaimsForPatientByPatientNameAsync(patientName);
                 if (InsuranceClaimsList == null || !InsuranceClaimsList.Any())
                 {
