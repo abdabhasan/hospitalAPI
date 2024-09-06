@@ -88,7 +88,7 @@ namespace HospitalApi.Tests.Controllers.BillControllerTests
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.Equal(StatusCodes.Status400BadRequest, badRequestResult.StatusCode);
-            Assert.Equal("Invalid patient ID.", badRequestResult.Value);
+            Assert.Equal("Invalid Patient ID.", badRequestResult.Value);
         }
 
         [Fact]
