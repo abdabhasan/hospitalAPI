@@ -61,6 +61,12 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
+                if (doctorId <= 0)
+                {
+                    return BadRequest("Invalid doctor ID.");
+                }
+
+
                 DoctorDTO doctor = await _doctorService.GetDoctorByIdAsync(doctorId);
                 if (doctor == null)
                 {
