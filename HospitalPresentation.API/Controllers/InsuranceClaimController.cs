@@ -96,6 +96,12 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
+                if (patientId <= 0)
+                {
+                    return BadRequest("Invalid patient Id.");
+                }
+
+
                 IEnumerable<InsuranceClaimDTO> InsuranceClaimsList = await _insuranceClaimService.GetInsuranceClaimsForPatientByPatientIdAsync(patientId);
                 if (InsuranceClaimsList == null || !InsuranceClaimsList.Any())
                 {
