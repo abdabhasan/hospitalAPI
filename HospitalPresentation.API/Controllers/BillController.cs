@@ -131,6 +131,12 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
+
+                if (BillId <= 0)
+                {
+                    return BadRequest("Invalid Bill ID.");
+                }
+
                 BillDTO Bill = await _billService.GetBillByIdAsync(BillId);
                 if (Bill == null)
                 {
