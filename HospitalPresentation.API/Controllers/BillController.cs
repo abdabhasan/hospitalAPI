@@ -170,6 +170,7 @@ namespace HospitalPresentation.API.Controllers
                 if (patientId <= 0)
                 {
                     return BadRequest("Invalid Patient ID.");
+                    
                 }
 
                 IEnumerable<BillDTO> BillsList = await _billService.GetBillsForPatientByPatientIdAsync(patientId);
@@ -201,6 +202,11 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
+                if (string.IsNullOrWhiteSpace(patientName))
+                {
+                    return BadRequest("Invalid patient name.");
+                }
+
                 IEnumerable<BillDTO> BillsList = await _billService.GetBillsForPatientByPatientNameAsync(patientName);
                 if (BillsList == null || !BillsList.Any())
                 {
