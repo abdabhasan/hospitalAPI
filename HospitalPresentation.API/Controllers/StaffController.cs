@@ -64,6 +64,13 @@ namespace HospitalPresentation.API.Controllers
 
             try
             {
+
+                if (staffId <= 0)
+                {
+                    return BadRequest("Invalid Staff ID.");
+                }
+
+
                 StaffDTO staff = await _staffService.GetStaffByIdAsync(staffId);
                 if (staff == null)
                 {
